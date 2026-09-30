@@ -1,0 +1,289 @@
+---
+title: Invoice
+description: Professional invoice template with i18n support
+variables:
+  company: ""
+  logo: ""
+  address: ""
+  taxRate: 0
+  currency: USD
+  invoiceNumber: ""
+  date: ""
+  dueDate: ""
+  client: {}
+  items: []
+  notes: ""
+  paymentTerms: "Net 30"
+---
+<style>
+  :root {
+    --color-brand: #1a73e8;
+    --color-text:  #1f2937;
+    --color-muted: #6b7280;
+    --color-border:#e5e7eb;
+    --color-bg:    #f9fafb;
+  }
+
+  body {
+    font-family: 'Noto Sans', system-ui, sans-serif;
+    color: var(--color-text);
+    font-size: 10pt;
+    line-height: 1.5;
+  }
+
+  @page {
+    size: A4;
+    margin: 20mm 20mm 25mm 20mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: var(--color-muted);
+    }
+  }
+
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--color-brand);
+  }
+
+  .company-name {
+    font-size: 22pt;
+    font-weight: 700;
+    color: var(--color-brand);
+    margin: 0 0 4px;
+  }
+
+  .invoice-title {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: end;
+    margin: 0;
+  }
+
+  .invoice-meta {
+    text-align: end;
+    color: var(--color-muted);
+    margin-top: 8px;
+  }
+
+  .invoice-meta strong { color: var(--color-text); }
+
+  .parties {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .party-label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  table.items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    page-break-inside: avoid;
+  }
+
+  table.items th {
+    background: var(--color-brand);
+    color: #fff;
+    padding: 8px 12px;
+    text-align: start;
+    font-size: 9pt;
+    font-weight: 600;
+  }
+
+  table.items td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  table.items tr:nth-child(even) td {
+    background: var(--color-bg);
+  }
+
+  td.amount, th.amount { text-align: end; }
+
+  .totals {
+    margin-left: auto;
+    width: 260px;
+  }
+
+  .totals table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .totals td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .totals td:last-child { text-align: end; font-weight: 500; }
+
+  .totals tr.grand-total td {
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--color-brand);
+    border-top: 2px solid var(--color-brand);
+    border-bottom: none;
+  }
+
+  .notes-section {
+    margin-top: 32px;
+    padding: 16px;
+    background: var(--color-bg);
+    border-left: 3px solid var(--color-brand);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .notes-label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: #dcfce7;
+    color: #166534;
+  }
+</style>
+
+<div class="invoice-header">
+  <div>
+    {{#if logo}}
+      <img src="{{ logo }}" alt="{{ company }}" style="height: 50px; margin-bottom: 8px;" />
+    {{else}}
+      <h1 class="company-name">{{ company }}</h1>
+    {{/if}}
+    {{#if address}}
+      <div style="color: var(--color-muted); font-size: 9pt;">
+        {{ address }}
+      </div>
+    {{/if}}
+  </div>
+  <div>
+    <h2 class="invoice-title">INVOICE</h2>
+    <div class="invoice-meta">
+      <div><strong>No:</strong> {{ invoiceNumber }}</div>
+      <div><strong>Date:</strong> {{ date | date }}</div>
+      {{#if dueDate}}
+        <div><strong>Due:</strong> {{ dueDate | date }}</div>
+      {{/if}}
+      <div style="margin-top: 8px;">
+        <span class="status-badge">{{ status | default:'Unpaid' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="parties">
+  <div>
+    <div class="party-label">From</div>
+    <strong>{{ company }}</strong>
+    {{#if address}}<br>{{ address }}{{/if}}
+    {{#if email}}<br>{{ email }}{{/if}}
+    {{#if phone}}<br>{{ phone }}{{/if}}
+  </div>
+  <div>
+    <div class="party-label">Bill To</div>
+    {{#if client.name}}<strong>{{ client.name }}</strong><br>{{/if}}
+    {{#if client.company}}{{ client.company }}<br>{{/if}}
+    {{#if client.address}}{{ client.address }}<br>{{/if}}
+    {{#if client.email}}{{ client.email }}{{/if}}
+  </div>
+</div>
+
+<table class="items">
+  <thead>
+    <tr>
+      <th style="width: 40%">Description</th>
+      <th style="width: 10%; text-align: center">Qty</th>
+      <th class="amount" style="width: 20%">Unit Price</th>
+      <th class="amount" style="width: 20%">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each items}}
+    <tr>
+      <td>
+        <strong>{{ name }}</strong>
+        {{#if description}}<br><span style="color: var(--color-muted); font-size: 9pt;">{{ description }}</span>{{/if}}
+      </td>
+      <td style="text-align: center">{{ qty }}</td>
+      <td class="amount">{{ unitPrice | currency }}</td>
+      <td class="amount">{{ total | currency }}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div class="totals">
+  <table>
+    <tr>
+      <td>Subtotal</td>
+      <td>{{ subtotal | currency }}</td>
+    </tr>
+    {{#if taxRate}}
+    <tr>
+      <td>Tax ({{ taxRate | percent }})</td>
+      <td>{{ tax | currency }}</td>
+    </tr>
+    {{/if}}
+    {{#if discount}}
+    <tr>
+      <td>Discount</td>
+      <td style="color: #16a34a">-{{ discount | currency }}</td>
+    </tr>
+    {{/if}}
+    <tr class="grand-total">
+      <td>Total Due</td>
+      <td>{{ grandTotal | currency }}</td>
+    </tr>
+  </table>
+</div>
+
+{{#if paymentTerms}}
+<div style="margin-top: 16px; color: var(--color-muted); font-size: 9pt;">
+  Payment Terms: {{ paymentTerms }}
+</div>
+{{/if}}
+
+{{#if notes}}
+<div class="notes-section">
+  <div class="notes-label">Notes</div>
+  <div>{{ notes }}</div>
+</div>
+{{/if}}
+
+{{#if bankDetails}}
+<div class="notes-section" style="margin-top: 12px; border-left-color: var(--color-muted);">
+  <div class="notes-label">Bank Details</div>
+  {{#each bankDetails}}
+  <div><strong>{{ @key }}:</strong> {{ this }}</div>
+  {{/each}}
+</div>
+{{/if}}

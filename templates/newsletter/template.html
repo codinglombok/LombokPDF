@@ -1,0 +1,54 @@
+---
+title: Newsletter
+description: Multi-column editorial newsletter layout
+variables:
+  publicationName: ""
+  issueDate: ""
+  issueNumber: ""
+  headline: ""
+  articles: []
+  logo: ""
+---
+<style>
+  @page { size: A4; margin: 15mm; @bottom-center { content: counter(page); font-size: 8pt; color: #888; } }
+  body { font-family: 'Noto Sans', serif; font-size: 9.5pt; line-height: 1.6; color: #1a1a1a; }
+
+  .masthead { text-align: center; border-bottom: 3pt solid #1a1a1a; padding-bottom: 10pt; margin-bottom: 16pt; }
+  .pub-name { font-size: 26pt; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; }
+  .issue-meta { font-size: 8pt; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4pt; }
+
+  .headline-block { margin-bottom: 16pt; padding-bottom: 12pt; border-bottom: 1pt solid #ddd; }
+  .headline { font-size: 18pt; font-weight: 700; line-height: 1.25; }
+
+  .articles-grid { column-count: 2; column-gap: 16pt; }
+
+  .article { break-inside: avoid; margin-bottom: 14pt; }
+  .article-title { font-size: 12pt; font-weight: 700; margin-bottom: 4pt; }
+  .article-byline { font-size: 7.5pt; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6pt; }
+  .article-body p { margin: 0 0 6pt; text-align: justify; }
+  .article-image { width: 100%; margin-bottom: 6pt; border-radius: 2pt; }
+  .drop-cap:first-letter { font-size: 28pt; font-weight: 700; float: left; line-height: 0.8; margin: 4pt 4pt 0 0; }
+</style>
+
+<div class="masthead">
+  {{#if logo}}<img src="{{ logo }}" style="height: 30pt; margin-bottom: 6pt;">{{/if}}
+  <div class="pub-name">{{ publicationName }}</div>
+  <div class="issue-meta">{{ issueDate | date }} {{#if issueNumber}}· Issue #{{ issueNumber }}{{/if}}</div>
+</div>
+
+{{#if headline}}
+<div class="headline-block"><div class="headline">{{ headline }}</div></div>
+{{/if}}
+
+<div class="articles-grid">
+  {{#each articles}}
+  <div class="article">
+    <div class="article-title">{{ title }}</div>
+    {{#if author}}<div class="article-byline">By {{ author }}{{#if date}} · {{ date | date }}{{/if}}</div>{{/if}}
+    {{#if image}}<img class="article-image" src="{{ image }}" alt="">{{/if}}
+    <div class="article-body drop-cap">
+      {{#each paragraphs}}<p>{{ this }}</p>{{/each}}
+    </div>
+  </div>
+  {{/each}}
+</div>

@@ -1,0 +1,82 @@
+---
+title: Technical Datasheet
+description: Product specification sheet with feature list and spec table
+variables:
+  productName: ""
+  productTagline: ""
+  modelNumber: ""
+  images: []
+  specs: {}
+  features: []
+  dimensions: {}
+  certifications: []
+  logo: ""
+---
+<style>
+  @page { size: A4; margin: 18mm; @bottom-right { content: "{{ modelNumber }} — Page " counter(page); font-size: 7.5pt; color: #999; } }
+  body { font-family: 'Noto Sans', sans-serif; font-size: 9pt; color: #1a1a1a; line-height: 1.5; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2pt solid #1a1a1a; padding-bottom: 12pt; margin-bottom: 16pt; }
+  .product-name { font-size: 22pt; font-weight: 800; margin-bottom: 2pt; }
+  .product-tagline { font-size: 10pt; color: #666; }
+  .model-badge { background: #1a1a1a; color: #fff; padding: 4pt 10pt; font-size: 9pt; font-weight: 700; border-radius: 2pt; }
+
+  .hero-images { display: grid; grid-template-columns: repeat({{ images.length }}, 1fr); gap: 8pt; margin-bottom: 16pt; }
+  .hero-images img { width: 100%; border-radius: 4pt; background: #f5f5f5; }
+
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; margin-bottom: 16pt; }
+  .feature-item { padding: 8pt 10pt; background: #f9fafb; border-left: 3pt solid #1a73e8; border-radius: 0 2pt 2pt 0; }
+  .feature-title { font-weight: 700; font-size: 9pt; margin-bottom: 2pt; }
+  .feature-desc { font-size: 8pt; color: #555; }
+
+  .section-title { font-size: 12pt; font-weight: 700; margin: 16pt 0 8pt; padding-bottom: 4pt; border-bottom: 1pt solid #ddd; }
+
+  table.specs { width: 100%; border-collapse: collapse; }
+  table.specs tr { border-bottom: 1pt solid #eee; }
+  table.specs td { padding: 6pt 8pt; font-size: 8.5pt; }
+  table.specs td:first-child { font-weight: 600; color: #444; width: 35%; background: #fafafa; }
+
+  .cert-badges { display: flex; gap: 6pt; flex-wrap: wrap; margin-top: 8pt; }
+  .cert-badge { border: 1pt solid #ccc; padding: 3pt 8pt; border-radius: 12pt; font-size: 7.5pt; color: #555; }
+</style>
+
+<div class="header">
+  <div>
+    {{#if logo}}<img src="{{ logo }}" style="height:24pt;margin-bottom:6pt;">{{/if}}
+    <div class="product-name">{{ productName }}</div>
+    {{#if productTagline}}<div class="product-tagline">{{ productTagline }}</div>{{/if}}
+  </div>
+  {{#if modelNumber}}<div class="model-badge">{{ modelNumber }}</div>{{/if}}
+</div>
+
+{{#if images.length}}
+<div class="hero-images">
+  {{#each images}}<img src="{{ this }}" alt="">{{/each}}
+</div>
+{{/if}}
+
+{{#if features.length}}
+<div class="section-title">Key Features</div>
+<div class="features-grid">
+  {{#each features}}
+  <div class="feature-item">
+    <div class="feature-title">{{ title }}</div>
+    {{#if description}}<div class="feature-desc">{{ description }}</div>{{/if}}
+  </div>
+  {{/each}}
+</div>
+{{/if}}
+
+<div class="section-title">Specifications</div>
+<table class="specs">
+  {{#each specs}}
+  <tr><td>{{ @key }}</td><td>{{ this }}</td></tr>
+  {{/each}}
+</table>
+
+{{#if certifications.length}}
+<div class="section-title">Certifications</div>
+<div class="cert-badges">
+  {{#each certifications}}<div class="cert-badge">{{ this }}</div>{{/each}}
+</div>
+{{/if}}

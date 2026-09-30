@@ -1,0 +1,43 @@
+# Source (only dist/ is published)
+src/
+tests/
+benchmarks/
+scripts/
+
+# Ports (published separately to their own registries)
+ports/
+
+# Framework adapters (published as separate packages)
+adapters/
+
+# Deployment configs (not part of the library)
+deploy/
+
+# Docs source (published docs live at docs.lombokpdf.dev)
+docs/
+
+# Config files
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+.eslintrc*
+.prettierrc*
+
+# CI/CD
+.github/
+
+# Development artifacts
+coverage/
+*.log
+.DS_Store
+node_modules/
+*.tsbuildinfo
+
+# SBOM working files (regenerated per release, attached to GitHub release instead)
+sbom.spdx.json
+sbom.spdx.json.sha256
+sbom-summary.md
+
+# Git
+.git/
+.gitignore

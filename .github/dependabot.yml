@@ -1,0 +1,118 @@
+version: 2
+
+updates:
+  # ─── npm (JS/TS core) ────────────────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
+    labels: ["dependencies", "npm"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── pip (Python port) ───────────────────────────────────────────────────
+  - package-ecosystem: "pip"
+    directory: "/ports/python"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "python"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Composer (PHP port) ─────────────────────────────────────────────────
+  - package-ecosystem: "composer"
+    directory: "/ports/php"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "php"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Go modules ──────────────────────────────────────────────────────────
+  - package-ecosystem: "gomod"
+    directory: "/ports/go"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "go"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Cargo (Rust port) ───────────────────────────────────────────────────
+  - package-ecosystem: "cargo"
+    directory: "/ports/rust"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "rust"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Maven (Java port) ───────────────────────────────────────────────────
+  - package-ecosystem: "maven"
+    directory: "/ports/java"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "java"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── NuGet (.NET port) ───────────────────────────────────────────────────
+  - package-ecosystem: "nuget"
+    directory: "/ports/dotnet"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "dotnet"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Bundler (Ruby port) ─────────────────────────────────────────────────
+  - package-ecosystem: "bundler"
+    directory: "/ports/ruby"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "ruby"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── GitHub Actions ──────────────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "ci"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ─── Docker ──────────────────────────────────────────────────────────────
+  - package-ecosystem: "docker"
+    directory: "/deploy/docker"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels: ["dependencies", "docker"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"

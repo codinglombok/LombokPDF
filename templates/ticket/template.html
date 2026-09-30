@@ -1,0 +1,172 @@
+---
+title: Event Ticket
+description: Professional event ticket with QR code and barcode support
+variables:
+  eventName: ""
+  eventSubtitle: ""
+  date: ""
+  time: ""
+  venue: ""
+  address: ""
+  holderName: ""
+  seatSection: ""
+  seatRow: ""
+  seatNumber: ""
+  ticketType: "General Admission"
+  ticketNumber: ""
+  price: ""
+  currency: "USD"
+  qrData: ""
+  barcode: ""
+  logo: ""
+  accentColor: "#1a73e8"
+---
+<style>
+  @page { size: 210mm 99mm landscape; margin: 0; }
+  body { margin: 0; padding: 0; font-family: 'Noto Sans', sans-serif; }
+
+  .ticket {
+    display: grid;
+    grid-template-columns: 1fr 80mm;
+    width: 210mm;
+    height: 99mm;
+    overflow: hidden;
+  }
+
+  .ticket-main {
+    background: {{ accentColor | default:'#1a73e8' }};
+    color: #fff;
+    padding: 10mm 12mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event-type {
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.75;
+    margin-bottom: 4mm;
+  }
+
+  .event-name {
+    font-size: 20pt;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 2mm;
+  }
+
+  .event-subtitle {
+    font-size: 9pt;
+    opacity: 0.85;
+    margin-bottom: 5mm;
+  }
+
+  .ticket-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4mm;
+    margin-top: auto;
+  }
+
+  .detail-label { font-size: 6.5pt; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 1mm; }
+  .detail-value { font-size: 10pt; font-weight: 600; }
+
+  .ticket-stub {
+    background: #f8f9fa;
+    padding: 8mm 10mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 2mm dashed #dee2e6;
+  }
+
+  .stub-event { font-size: 8pt; font-weight: 700; color: #333; text-align: center; margin-bottom: 2mm; }
+  .stub-type  { font-size: 7pt; color: #888; text-align: center; }
+
+  .qr-placeholder {
+    width: 40mm;
+    height: 40mm;
+    background: #e9ecef;
+    border: 1pt solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7pt;
+    color: #aaa;
+    border-radius: 2mm;
+  }
+
+  .ticket-number {
+    font-size: 7pt;
+    color: #999;
+    font-family: monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .seat-badge {
+    background: {{ accentColor | default:'#1a73e8' }};
+    color: #fff;
+    padding: 2mm 4mm;
+    border-radius: 2mm;
+    font-size: 10pt;
+    font-weight: 700;
+    text-align: center;
+    min-width: 20mm;
+  }
+</style>
+
+<div class="ticket">
+  <div class="ticket-main">
+    <div class="event-type">{{ ticketType }}</div>
+    <div class="event-name">{{ eventName }}</div>
+    {{#if eventSubtitle}}<div class="event-subtitle">{{ eventSubtitle }}</div>{{/if}}
+
+    <div class="ticket-details">
+      <div>
+        <div class="detail-label">Date</div>
+        <div class="detail-value">{{ date | date }}</div>
+      </div>
+      <div>
+        <div class="detail-label">Time</div>
+        <div class="detail-value">{{ time }}</div>
+      </div>
+      {{#if seatSection}}
+      <div>
+        <div class="detail-label">Seat</div>
+        <div class="detail-value">{{ seatSection }}{{#if seatRow}}-{{ seatRow }}{{/if}}{{#if seatNumber}}-{{ seatNumber }}{{/if}}</div>
+      </div>
+      {{else}}
+      <div>
+        <div class="detail-label">Price</div>
+        <div class="detail-value">{{ price | currency }}</div>
+      </div>
+      {{/if}}
+      <div>
+        <div class="detail-label">Venue</div>
+        <div class="detail-value">{{ venue }}</div>
+      </div>
+      <div>
+        <div class="detail-label">Holder</div>
+        <div class="detail-value">{{ holderName }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticket-stub">
+    <div>
+      <div class="stub-event">{{ eventName | truncate:30 }}</div>
+      <div class="stub-type">{{ ticketType }}</div>
+    </div>
+
+    <div class="qr-placeholder">QR CODE<br>{{ ticketNumber }}</div>
+
+    {{#if seatSection}}
+    <div class="seat-badge">{{ seatSection }}{{#if seatRow}} · R{{ seatRow }}{{/if}}{{#if seatNumber}} · S{{ seatNumber }}{{/if}}</div>
+    {{/if}}
+
+    <div class="ticket-number">#{{ ticketNumber }}</div>
+  </div>
+</div>

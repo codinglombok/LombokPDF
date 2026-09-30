@@ -1,0 +1,194 @@
+name: Release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: write
+  id-token: write   # For npm provenance
+
+jobs:
+
+  # ─── Full Audit (must pass before any publish) ───────────────────────────
+
+  pre-release-audit:
+    name: Pre-release Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci
+      - run: npm run audit:all          # ALL audits must pass
+
+  # ─── Build ───────────────────────────────────────────────────────────────
+
+  build:
+    name: Build Release Artifacts
+    runs-on: ubuntu-latest
+    needs: pre-release-audit
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci
+      - run: npm run build
+
+      - name: Get version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Generate SBOM
+        run: npm run audit:sbom
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            dist/
+            sbom.spdx.json
+            sbom.spdx.json.sha256
+            sbom-summary.md
+
+  # ─── Test (full matrix) ──────────────────────────────────────────────────
+
+  test:
+    name: Release Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci
+      - run: npm test
+
+  # ─── Publish npm ─────────────────────────────────────────────────────────
+
+  publish-npm:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    needs: test
+    environment: npm-publish
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - uses: actions/download-artifact@v4
+        with: { name: release-artifacts }
+
+      - run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # ─── Publish PyPI ────────────────────────────────────────────────────────
+
+  publish-pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: test
+    environment: pypi-publish
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+
+      - name: Build Python package
+        run: |
+          cd ports/python
+          pip install build
+          python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: ports/python/dist/
+          password: ${{ secrets.PYPI_TOKEN }}
+          verify-metadata: true
+
+  # ─── Publish Packagist ───────────────────────────────────────────────────
+
+  publish-packagist:
+    name: Notify Packagist
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Trigger Packagist webhook
+        run: |
+          curl -s -XPOST \
+            "https://packagist.org/api/update-package?username=${{ secrets.PACKAGIST_USER }}&apiToken=${{ secrets.PACKAGIST_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/codinglombok/lombokpdf-php"}}'
+
+  # ─── Publish Docker ──────────────────────────────────────────────────────
+
+  publish-docker:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: lombokdigital/lombokpdf
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deploy/docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          sbom: true
+          provenance: true
+
+  # ─── GitHub Release ──────────────────────────────────────────────────────
+
+  github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [publish-npm, publish-docker]
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: actions/download-artifact@v4
+        with: { name: release-artifacts, path: release-files }
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-files/dist/lombokpdf.browser.min.js
+            release-files/sbom.spdx.json
+            release-files/sbom.spdx.json.sha256
+            release-files/sbom-summary.md
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

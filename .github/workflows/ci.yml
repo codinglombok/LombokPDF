@@ -1,0 +1,211 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  # ─── Audit (runs first — blocks everything else) ──────────────────────────
+
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript strict check
+        run: npm run audit:types
+
+      - name: Security audit (CVE scan)
+        run: npm run audit:security
+
+      - name: Token scanner (no secrets)
+        run: npm run audit:tokens
+
+      - name: SQL injection scan
+        run: npm run audit:sql
+
+      - name: License compatibility
+        run: npm run audit:licenses
+
+  # ─── Lint ────────────────────────────────────────────────────────────────
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ env.NODE_VERSION }}, cache: npm }
+      - run: npm ci
+      - run: npm run lint
+
+  # ─── Test Matrix ─────────────────────────────────────────────────────────
+
+  test:
+    name: Test (Node ${{ matrix.node }} / ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: audit
+    strategy:
+      fail-fast: false
+      matrix:
+        os:   [ubuntu-latest, macos-latest, windows-latest]
+        node: ['18', '20', '22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '22'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  # ─── Build ───────────────────────────────────────────────────────────────
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ env.NODE_VERSION }}, cache: npm }
+      - run: npm ci
+      - run: npm run build
+
+      - name: Check dist artifacts
+        run: |
+          ls -la dist/
+          test -f dist/index.js   || (echo "Missing dist/index.js" && exit 1)
+          test -f dist/index.cjs  || (echo "Missing dist/index.cjs" && exit 1)
+          test -f dist/index.d.ts || (echo "Missing dist/index.d.ts" && exit 1)
+          test -f dist/browser.js || (echo "Missing dist/browser.js" && exit 1)
+
+      - name: Bundle size check
+        run: |
+          SIZE=$(du -sk dist/index.js | cut -f1)
+          echo "dist/index.js: ${SIZE}KB"
+          if [ "$SIZE" -gt 500 ]; then
+            echo "WARNING: Bundle size ${SIZE}KB exceeds 500KB guideline"
+          fi
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+
+  # ─── Port Tests ──────────────────────────────────────────────────────────
+
+  test-python:
+    name: Python Port Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: cd ports/python && pip install -e ".[test]"
+      - run: cd ports/python && pytest tests/ -v --tb=short
+
+  test-php:
+    name: PHP Port Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.3', extensions: 'ffi, mbstring, json' }
+      - run: cd ports/php && composer install --no-interaction
+      - run: cd ports/php && composer test
+
+  test-go:
+    name: Go Port Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: '1.23' }
+      - run: cd ports/go && go test ./... -v
+
+  # ─── Security Hardening Checks ───────────────────────────────────────────
+
+  security-hardening:
+    name: Security Hardening
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ env.NODE_VERSION }}, cache: npm }
+      - run: npm ci
+
+      - name: Check no eval() in dist
+        run: |
+          if grep -r "eval(" dist/ --include="*.js" | grep -v "node_modules"; then
+            echo "SECURITY: eval() found in dist output"
+            exit 1
+          fi
+          echo "✓ No eval() in dist"
+
+      - name: Check no innerHTML in dist
+        run: |
+          if grep -r "innerHTML" dist/ --include="*.js" | grep -v "node_modules"; then
+            echo "SECURITY: innerHTML found in dist output"
+            exit 1
+          fi
+          echo "✓ No innerHTML in dist"
+
+      - name: Check wkhtmltopdf not present
+        run: |
+          if grep -r "wkhtmltopdf" package-lock.json 2>/dev/null; then
+            echo "SECURITY: wkhtmltopdf found in lockfile (CVSS 9.8)"
+            exit 1
+          fi
+          echo "✓ wkhtmltopdf not present"
+
+      - name: SBOM generation
+        run: npm run audit:sbom
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ github.sha }}
+          path: |
+            sbom.spdx.json
+            sbom.spdx.json.sha256
+            sbom-summary.md

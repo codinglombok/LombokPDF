@@ -1,0 +1,176 @@
+---
+title: Certificate
+description: Award or completion certificate with elegant border design
+variables:
+  recipientName: ""
+  title: "Certificate of Completion"
+  description: ""
+  issuedBy: ""
+  issuedByTitle: ""
+  date: ""
+  courseOrEvent: ""
+  signatureLabel: "Authorized Signature"
+  logo: ""
+  badgeText: ""
+---
+<style>
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', serif;
+    background: #fff;
+    width: 297mm;
+    height: 210mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cert-wrapper {
+    width: 257mm;
+    height: 170mm;
+    margin: 20mm;
+    border: 3pt solid #c9a84c;
+    position: relative;
+    padding: 20mm 25mm;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* Decorative corner borders */
+  .cert-wrapper::before,
+  .cert-wrapper::after {
+    content: '';
+    position: absolute;
+    border: 1pt solid #c9a84c;
+  }
+  .cert-wrapper::before { inset: 6pt; }
+  .cert-wrapper::after  { inset: 10pt; }
+
+  .cert-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #c9a84c, #f5d485, #c9a84c);
+    color: #4a3200;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4pt 14pt;
+    border-radius: 2pt;
+    margin-bottom: 10pt;
+  }
+
+  .cert-title {
+    font-size: 24pt;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2c2c2c;
+    margin: 0 0 8pt;
+    line-height: 1.2;
+  }
+
+  .cert-subtitle {
+    font-size: 9pt;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16pt;
+  }
+
+  .cert-recipient {
+    font-size: 30pt;
+    font-weight: 700;
+    color: #1a3a6e;
+    font-style: italic;
+    margin: 8pt 0;
+    line-height: 1.2;
+  }
+
+  .cert-description {
+    font-size: 10pt;
+    color: #555;
+    max-width: 80%;
+    margin: 0 auto 16pt;
+    line-height: 1.6;
+  }
+
+  .cert-course {
+    font-size: 13pt;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 16pt;
+  }
+
+  .cert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 16pt;
+    padding-top: 10pt;
+    border-top: 1pt solid #e0d0a0;
+  }
+
+  .cert-sig { text-align: center; min-width: 100pt; }
+  .cert-sig-line { border-top: 1pt solid #888; margin-bottom: 4pt; width: 120pt; }
+  .cert-sig-name { font-weight: 600; font-size: 9pt; color: #2c2c2c; }
+  .cert-sig-title { font-size: 8pt; color: #888; }
+
+  .cert-date { font-size: 9pt; color: #888; text-align: right; }
+
+  {{#if logo}}
+  .cert-logo { height: 36pt; margin-bottom: 10pt; }
+  {{/if}}
+</style>
+
+<body>
+<div class="cert-wrapper">
+  {{#if logo}}
+  <img class="cert-logo" src="{{ logo }}" alt="">
+  {{/if}}
+
+  {{#if badgeText}}
+  <div class="cert-badge">{{ badgeText }}</div>
+  {{else}}
+  <div class="cert-badge">Certificate of Achievement</div>
+  {{/if}}
+
+  <div class="cert-title">{{ title }}</div>
+  <div class="cert-subtitle">This is to certify that</div>
+
+  <div class="cert-recipient">{{ recipientName }}</div>
+
+  {{#if description}}
+  <div class="cert-description">{{ description }}</div>
+  {{else if courseOrEvent}}
+  <div class="cert-description">has successfully completed</div>
+  <div class="cert-course">{{ courseOrEvent }}</div>
+  {{/if}}
+
+  <div class="cert-footer">
+    <div class="cert-date">
+      <div>Date of Issue</div>
+      <strong>{{ date | date }}</strong>
+    </div>
+
+    <div class="cert-sig">
+      <div class="cert-sig-line"></div>
+      <div class="cert-sig-name">{{ issuedBy }}</div>
+      <div class="cert-sig-title">{{ issuedByTitle }}</div>
+    </div>
+
+    {{#if secondSigner}}
+    <div class="cert-sig">
+      <div class="cert-sig-line"></div>
+      <div class="cert-sig-name">{{ secondSigner.name }}</div>
+      <div class="cert-sig-title">{{ secondSigner.title }}</div>
+    </div>
+    {{/if}}
+  </div>
+</div>
+</body>

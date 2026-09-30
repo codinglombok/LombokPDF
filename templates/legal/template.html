@@ -1,0 +1,246 @@
+---
+title: Legal Document
+description: Professional legal contract with numbered clauses and signature blocks
+variables:
+  title: "SERVICE AGREEMENT"
+  parties: []
+  clauses: []
+  governingLaw: ""
+  jurisdiction: ""
+  effectiveDate: ""
+  expiryDate: ""
+  witnessRequired: false
+---
+<style>
+  @page {
+    size: A4;
+    margin: 30mm 25mm 30mm 25mm;
+    @top-center {
+      content: "{{ title }}";
+      font-size: 8pt;
+      color: #888;
+    }
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages) " — CONFIDENTIAL";
+      font-size: 8pt;
+      color: #888;
+    }
+  }
+
+  body {
+    font-family: 'Noto Sans', 'Times New Roman', serif;
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #111;
+  }
+
+  .legal-title {
+    font-size: 16pt;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6pt;
+  }
+
+  .legal-subtitle {
+    text-align: center;
+    font-size: 10pt;
+    color: #555;
+    margin-bottom: 24pt;
+  }
+
+  .parties-section {
+    border: 1pt solid #ccc;
+    padding: 14pt 16pt;
+    margin-bottom: 20pt;
+    page-break-inside: avoid;
+  }
+
+  .parties-title {
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #555;
+    margin-bottom: 10pt;
+    padding-bottom: 6pt;
+    border-bottom: 1pt solid #e0e0e0;
+  }
+
+  .party {
+    margin-bottom: 10pt;
+  }
+
+  .party-role {
+    font-weight: 700;
+    font-size: 9pt;
+    text-transform: uppercase;
+    color: #333;
+  }
+
+  h2.clause-heading {
+    font-size: 11pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 20pt 0 8pt;
+    page-break-after: avoid;
+    counter-increment: clause;
+  }
+
+  h2.clause-heading::before {
+    content: counter(clause) ". ";
+  }
+
+  h3.sub-clause {
+    font-size: 10.5pt;
+    font-weight: 600;
+    margin: 12pt 0 4pt;
+    page-break-after: avoid;
+  }
+
+  p { margin: 0 0 8pt; text-align: justify; }
+
+  ol.legal-list {
+    padding-left: 24pt;
+    margin: 8pt 0;
+  }
+
+  ol.legal-list li {
+    margin-bottom: 6pt;
+    text-align: justify;
+  }
+
+  .definitions dt {
+    font-weight: 700;
+    display: inline;
+  }
+
+  .definitions dd {
+    display: inline;
+    margin: 0;
+  }
+
+  .definitions p {
+    margin-bottom: 6pt;
+  }
+
+  .sig-block {
+    margin-top: 32pt;
+    page-break-inside: avoid;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32pt;
+    margin-top: 16pt;
+  }
+
+  .sig-party {
+    border-top: 1pt solid #111;
+    padding-top: 8pt;
+  }
+
+  .sig-label {
+    font-size: 9pt;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4pt;
+  }
+
+  .sig-name  { font-weight: 700; margin-bottom: 2pt; }
+  .sig-title { font-size: 9pt; color: #555; }
+  .sig-date  { font-size: 9pt; color: #555; margin-top: 4pt; }
+
+  .witness-block {
+    margin-top: 24pt;
+    padding-top: 12pt;
+    border-top: 1pt solid #ccc;
+  }
+
+  body { counter-reset: clause; }
+</style>
+
+<div class="legal-title">{{ title }}</div>
+<div class="legal-subtitle">
+  Effective Date: <strong>{{ effectiveDate | date }}</strong>
+  {{#if expiryDate}} — Expiry: <strong>{{ expiryDate | date }}</strong>{{/if}}
+</div>
+
+<div class="parties-section">
+  <div class="parties-title">Parties to this Agreement</div>
+  {{#each parties}}
+  <div class="party">
+    <span class="party-role">{{ role }}:</span>
+    <strong>{{ name }}</strong>
+    {{#if address}}, {{ address }}{{/if}}
+    {{#if registration}} (Reg. No. {{ registration }}){{/if}}
+    {{#if representedBy}}, represented by <strong>{{ representedBy }}</strong>{{/if}}
+    (hereinafter referred to as <strong>"{{ shortName | default:role }}"</strong>)
+  </div>
+  {{/each}}
+</div>
+
+{{#each clauses}}
+<h2 class="clause-heading">{{ title }}</h2>
+
+{{#if content}}<p>{{ content }}</p>{{/if}}
+
+{{#if items}}
+<ol class="legal-list">
+  {{#each items}}
+  <li>{{ this }}</li>
+  {{/each}}
+</ol>
+{{/if}}
+
+{{#if subclauses}}
+{{#each subclauses}}
+<h3 class="sub-clause">{{ title }}</h3>
+<p>{{ content }}</p>
+{{/each}}
+{{/if}}
+{{/each}}
+
+{{#if governingLaw}}
+<h2 class="clause-heading">Governing Law & Jurisdiction</h2>
+<p>This Agreement shall be governed by and construed in accordance with the laws of
+<strong>{{ governingLaw }}</strong>. Any disputes arising under this Agreement shall
+be subject to the exclusive jurisdiction of the courts of
+<strong>{{ jurisdiction | default:governingLaw }}</strong>.</p>
+{{/if}}
+
+<div class="sig-block">
+  <p>IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.</p>
+
+  <div class="sig-grid">
+    {{#each parties}}
+    <div class="sig-party">
+      <div class="sig-label">{{ role }}</div>
+      <div class="sig-name">{{ name }}</div>
+      <div class="sig-title">{{#if representedBy}}By: {{ representedBy }}{{/if}}</div>
+      <div style="height: 36pt; border-bottom: 1pt solid #111; margin: 12pt 0 6pt;"></div>
+      <div class="sig-label">Signature</div>
+      <div class="sig-date">Date: ___________________</div>
+    </div>
+    {{/each}}
+  </div>
+
+  {{#if witnessRequired}}
+  <div class="witness-block">
+    <div class="sig-label">Witness</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24pt; margin-top: 12pt;">
+      <div>
+        <div style="height: 36pt; border-bottom: 1pt solid #111; margin-bottom: 4pt;"></div>
+        <div class="sig-label">Witness Signature</div>
+      </div>
+      <div>
+        <div style="height: 36pt; border-bottom: 1pt solid #111; margin-bottom: 4pt;"></div>
+        <div class="sig-label">Witness Name & Date</div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</div>

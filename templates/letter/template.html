@@ -1,0 +1,168 @@
+---
+title: Formal Letter
+description: Professional business letter following standard formatting conventions
+variables:
+  sender: {}
+  recipient: {}
+  subject: ""
+  date: ""
+  body: ""
+  salutation: "Dear"
+  closing: "Sincerely"
+  logo: ""
+  reference: ""
+  attachments: []
+---
+<style>
+  @page { size: A4; margin: 25mm 25mm 30mm 30mm; }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #111;
+  }
+
+  .letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24pt;
+    padding-bottom: 16pt;
+    border-bottom: 2pt solid #1a73e8;
+  }
+
+  .sender-block .company {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #1a73e8;
+  }
+
+  .sender-block .details {
+    font-size: 9pt;
+    color: #555;
+    line-height: 1.5;
+    margin-top: 4pt;
+  }
+
+  .date-block {
+    text-align: right;
+    font-size: 10pt;
+    color: #333;
+  }
+
+  .reference-line {
+    font-size: 9pt;
+    color: #666;
+    margin-bottom: 16pt;
+  }
+
+  .recipient-block {
+    margin-bottom: 20pt;
+    line-height: 1.5;
+  }
+
+  .recipient-block .name    { font-weight: 700; }
+  .recipient-block .company { font-style: italic; }
+
+  .subject-line {
+    font-weight: 700;
+    margin-bottom: 16pt;
+    padding: 8pt 12pt;
+    background: #f0f4ff;
+    border-left: 3pt solid #1a73e8;
+  }
+
+  .subject-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
+  .subject-text  { font-size: 11pt; color: #111; }
+
+  .salutation { margin-bottom: 12pt; }
+
+  .body-text p { margin: 0 0 10pt; text-align: justify; }
+
+  .closing-block { margin-top: 20pt; }
+  .closing-name  { font-weight: 700; margin-top: 36pt; }
+  .closing-title { font-size: 10pt; color: #555; }
+  .closing-dept  { font-size: 9pt; color: #888; }
+
+  .attachments {
+    margin-top: 20pt;
+    padding-top: 12pt;
+    border-top: 1pt solid #e0e0e0;
+    font-size: 9pt;
+    color: #555;
+  }
+
+  .attachments strong { display: block; margin-bottom: 4pt; }
+
+  {{#unless logo}}.sender-block .logo-placeholder { display: none; }{{/unless}}
+</style>
+
+<div class="letter-header">
+  <div class="sender-block">
+    {{#if logo}}
+    <img src="{{ logo }}" alt="{{ sender.company }}" style="height: 40pt; margin-bottom: 6pt; display: block;">
+    {{else}}
+    <div class="company">{{ sender.company }}</div>
+    {{/if}}
+    <div class="details">
+      {{#if sender.address}}{{ sender.address }}<br>{{/if}}
+      {{#if sender.city}}{{ sender.city }}{{#if sender.postalCode}}, {{ sender.postalCode }}{{/if}}<br>{{/if}}
+      {{#if sender.phone}}Tel: {{ sender.phone }}  {{/if}}
+      {{#if sender.email}}{{ sender.email }}{{/if}}
+      {{#if sender.website}}<br>{{ sender.website }}{{/if}}
+    </div>
+  </div>
+  <div class="date-block">
+    {{#if reference}}
+    <div style="font-size: 9pt; color: #888; margin-bottom: 4pt;">Ref: {{ reference }}</div>
+    {{/if}}
+    {{ date | date }}
+  </div>
+</div>
+
+<div class="recipient-block">
+  {{#if recipient.name}}<div class="name">{{ recipient.name }}</div>{{/if}}
+  {{#if recipient.title}}<div>{{ recipient.title }}</div>{{/if}}
+  {{#if recipient.company}}<div class="company">{{ recipient.company }}</div>{{/if}}
+  {{#if recipient.address}}<div>{{ recipient.address }}</div>{{/if}}
+  {{#if recipient.city}}<div>{{ recipient.city }}{{#if recipient.postalCode}}, {{ recipient.postalCode }}{{/if}}</div>{{/if}}
+  {{#if recipient.country}}<div>{{ recipient.country }}</div>{{/if}}
+</div>
+
+{{#if subject}}
+<div class="subject-line">
+  <div class="subject-label">Subject</div>
+  <div class="subject-text">{{ subject }}</div>
+</div>
+{{/if}}
+
+<div class="salutation">{{ salutation }} {{ recipient.name | default:'Sir/Madam' }},</div>
+
+<div class="body-text">
+  {{#each bodyParagraphs}}
+  <p>{{ this }}</p>
+  {{else}}
+  <p>{{ body }}</p>
+  {{/each}}
+</div>
+
+<div class="closing-block">
+  <div>{{ closing | default:'Sincerely' }},</div>
+  {{#if sender.signatureImage}}
+  <img src="{{ sender.signatureImage }}" alt="Signature" style="height: 36pt; margin: 8pt 0;">
+  {{/if}}
+  <div class="closing-name">{{ sender.name }}</div>
+  {{#if sender.title}}<div class="closing-title">{{ sender.title }}</div>{{/if}}
+  {{#if sender.department}}<div class="closing-dept">{{ sender.department }}</div>{{/if}}
+  {{#if sender.company}}<div class="closing-dept">{{ sender.company }}</div>{{/if}}
+</div>
+
+{{#if attachments.length}}
+<div class="attachments">
+  <strong>Enclosures ({{ attachments.length }}):</strong>
+  {{#each attachments}}
+  <div>{{ @index | add:1 }}. {{ this }}</div>
+  {{/each}}
+</div>
+{{/if}}

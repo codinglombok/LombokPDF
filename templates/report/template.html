@@ -1,0 +1,178 @@
+---
+title: Executive Report
+description: Professional business report with running headers and summary stats
+variables:
+  title: "Executive Report"
+  subtitle: ""
+  author: ""
+  date: ""
+  department: ""
+  sections: []
+  kpis: []
+  notes: ""
+---
+<style>
+  :root {
+    --color-brand:   #1a73e8;
+    --color-accent:  #1557b0;
+    --color-text:    #1f2937;
+    --color-muted:   #6b7280;
+    --color-border:  #e5e7eb;
+    --color-bg:      #f9fafb;
+  }
+
+  @page {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+    @top-center {
+      content: "{{ title }}";
+      font-size: 8pt;
+      color: var(--color-muted);
+    }
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: var(--color-muted);
+    }
+    @bottom-left {
+      content: "{{ department }}";
+      font-size: 8pt;
+      color: var(--color-muted);
+    }
+  }
+
+  @page :first {
+    @top-center { content: none; }
+    @bottom-right { content: none; }
+    @bottom-left { content: none; }
+  }
+
+  body { font-family: 'Noto Sans', sans-serif; color: var(--color-text); font-size: 10pt; line-height: 1.6; }
+
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 60vh;
+    border-bottom: 3px solid var(--color-brand);
+    margin-bottom: 32pt;
+    padding-bottom: 24pt;
+  }
+
+  .cover-category {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-brand);
+    font-weight: 600;
+    margin-bottom: 12pt;
+  }
+
+  h1.report-title {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 8pt;
+    line-height: 1.2;
+  }
+
+  .report-subtitle { font-size: 14pt; color: var(--color-muted); margin-bottom: 24pt; }
+
+  .cover-meta { font-size: 9pt; color: var(--color-muted); }
+  .cover-meta span { margin-right: 20pt; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12pt;
+    margin: 20pt 0;
+    page-break-inside: avoid;
+  }
+
+  .kpi-box {
+    padding: 14pt 16pt;
+    background: var(--color-bg);
+    border-radius: 4pt;
+    border-top: 3pt solid var(--color-brand);
+  }
+
+  .kpi-label { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-muted); margin-bottom: 6pt; }
+  .kpi-value { font-size: 22pt; font-weight: 700; color: var(--color-text); }
+  .kpi-delta { font-size: 9pt; margin-top: 4pt; }
+  .kpi-delta.up   { color: #16a34a; }
+  .kpi-delta.down { color: #dc2626; }
+
+  h2 { font-size: 16pt; color: var(--color-brand); margin: 24pt 0 10pt; padding-bottom: 4pt; border-bottom: 1pt solid var(--color-border); page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 14pt 0 6pt; page-break-after: avoid; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12pt 0; page-break-inside: avoid; }
+  thead th { background: var(--color-brand); color: #fff; padding: 7pt 10pt; font-size: 9pt; text-align: left; }
+  tbody td { padding: 6pt 10pt; border-bottom: 1pt solid var(--color-border); font-size: 9pt; }
+  tbody tr:nth-child(even) td { background: var(--color-bg); }
+
+  blockquote { border-left: 3pt solid var(--color-brand); margin: 14pt 0 14pt 0; padding: 10pt 14pt; background: var(--color-bg); font-style: italic; }
+
+  .page-break { page-break-after: always; }
+</style>
+
+<div class="cover">
+  <div class="cover-category">{{ department | default:'Executive Report' }}</div>
+  <h1 class="report-title">{{ title }}</h1>
+  {{#if subtitle}}
+  <div class="report-subtitle">{{ subtitle }}</div>
+  {{/if}}
+  <div class="cover-meta">
+    {{#if author}}<span><strong>Prepared by:</strong> {{ author }}</span>{{/if}}
+    {{#if date}}<span><strong>Date:</strong> {{ date | date }}</span>{{/if}}
+    {{#if classification}}<span><strong>Classification:</strong> {{ classification }}</span>{{/if}}
+  </div>
+</div>
+
+{{#if kpis.length}}
+<h2>Key Performance Indicators</h2>
+<div class="kpi-grid">
+  {{#each kpis}}
+  <div class="kpi-box">
+    <div class="kpi-label">{{ label }}</div>
+    <div class="kpi-value">{{ value }}</div>
+    {{#if delta}}
+    <div class="kpi-delta {{#if (gt delta 0)}}up{{else}}down{{/if}}">
+      {{#if (gt delta 0)}}▲{{else}}▼{{/if}} {{ delta | percent }} vs prev period
+    </div>
+    {{/if}}
+  </div>
+  {{/each}}
+</div>
+{{/if}}
+
+{{#each sections}}
+<h2>{{ title }}</h2>
+{{#if content}}
+<p>{{ content }}</p>
+{{/if}}
+{{#if items}}
+<ul>
+  {{#each items}}<li>{{ this }}</li>{{/each}}
+</ul>
+{{/if}}
+{{#if table}}
+<table>
+  <thead>
+    <tr>
+      {{#each table.headers}}<th>{{ this }}</th>{{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each table.rows}}
+    <tr>
+      {{#each this}}<td>{{ this }}</td>{{/each}}
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{/if}}
+{{/each}}
+
+{{#if notes}}
+<blockquote>{{ notes }}</blockquote>
+{{/if}}

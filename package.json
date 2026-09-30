@@ -1,0 +1,163 @@
+{
+  "name": "lombokpdf",
+  "version": "1.0.0",
+  "description": "Lightweight, elegant, polyglot PDF generation — Apache 2.0",
+  "license": "Apache-2.0",
+  "author": "Lombok Digital <hello@codinglombok.dev>",
+  "homepage": "https://lombokpdf.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codinglombok/lombokpdf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codinglombok/lombokpdf/issues"
+  },
+  "keywords": [
+    "pdf",
+    "pdf-generation",
+    "html-to-pdf",
+    "markdown-to-pdf",
+    "css-paged-media",
+    "invoice",
+    "report",
+    "template",
+    "i18n",
+    "rtl",
+    "arabic",
+    "cjk",
+    "multilingual",
+    "lightweight",
+    "wasm",
+    "apache2"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./skills": {
+      "import": "./dist/skills/index.js",
+      "require": "./dist/skills/index.cjs",
+      "types": "./dist/skills/index.d.ts"
+    },
+    "./skills/io": {
+      "import": "./dist/skills/io/index.js",
+      "types": "./dist/skills/io/index.d.ts"
+    },
+    "./skills/ops": {
+      "import": "./dist/skills/ops/index.js",
+      "types": "./dist/skills/ops/index.d.ts"
+    },
+    "./skills/image": {
+      "import": "./dist/skills/image/index.js",
+      "types": "./dist/skills/image/index.d.ts"
+    },
+    "./skills/marks": {
+      "import": "./dist/skills/marks/index.js",
+      "types": "./dist/skills/marks/index.d.ts"
+    },
+    "./skills/forms": {
+      "import": "./dist/skills/forms/index.js",
+      "types": "./dist/skills/forms/index.d.ts"
+    },
+    "./skills/security": {
+      "import": "./dist/skills/security/index.js",
+      "types": "./dist/skills/security/index.d.ts"
+    },
+    "./skills/structure": {
+      "import": "./dist/skills/structure/index.js",
+      "types": "./dist/skills/structure/index.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser.js",
+      "types": "./dist/browser.d.ts"
+    },
+    "./cli": "./dist/cli/index.js"
+  },
+  "bin": {
+    "lombokpdf": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:wasm": "cd src/core && cargo build --target wasm32-unknown-unknown --release && wasm-bindgen",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "audit:security": "node scripts/audit-security.js",
+    "audit:tokens": "node scripts/audit-tokens.js",
+    "audit:sql": "node scripts/audit-sql.js",
+    "audit:types": "tsc --noEmit --strict",
+    "audit:licenses": "node scripts/audit-licenses.js",
+    "audit:sbom": "node scripts/audit-sbom.js",
+    "audit:all": "npm run audit:security && npm run audit:tokens && npm run audit:sql && npm run audit:types && npm run audit:licenses && npm run audit:sbom",
+    "docs": "typedoc src/index.ts",
+    "prepublishOnly": "npm run audit:all && npm run build && npm test",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:major": "npm version major && git push --follow-tags"
+  },
+  "dependencies": {
+    "@types/hyphen": "^1.14.0",
+    "bidi-js": "^1.0.3",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "gray-matter": "^4.0.3",
+    "handlebars": "^4.7.8",
+    "hyphen": "^1.14.1",
+    "jsbarcode": "^3.11.6",
+    "mammoth": "^1.12.0",
+    "marked": "^18.0.7",
+    "marked-gfm-heading-id": "^4.1.4",
+    "ora": "^8.0.1",
+    "parse5": "^7.1.2",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.15.0",
+    "qrcode": "^1.5.3",
+    "sharp": "^0.33.4",
+    "yaml": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pdfkit": "^0.13.6",
+    "@types/qrcode": "^1.5.5",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "eslint": "^9.8.0",
+    "prettier": "^3.3.3",
+    "tsup": "^8.2.4",
+    "typedoc": "^0.26.5",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  },
+  "peerDependencies": {
+    "@lombok/charts": ">=1.0.0",
+    "@lombok/css": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@lombok/css": {
+      "optional": true
+    },
+    "@lombok/charts": {
+      "optional": true
+    }
+  }
+}

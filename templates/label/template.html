@@ -1,0 +1,161 @@
+---
+title: Shipping Label
+description: Standard 4x6 shipping label with barcode and tracking info
+variables:
+  from: {}
+  to: {}
+  trackingNumber: ""
+  service: "Standard"
+  weight: ""
+  weightUnit: "kg"
+  dimensions: ""
+  orderNumber: ""
+  carrier: ""
+  barcodeData: ""
+  specialInstructions: ""
+---
+<style>
+  @page { size: 101.6mm 152.4mm; margin: 4mm; }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 9pt;
+    color: #000;
+    margin: 0;
+  }
+
+  .label {
+    border: 1.5pt solid #000;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .carrier-bar {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 3mm;
+    font-size: 14pt;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .service-bar {
+    text-align: center;
+    padding: 2mm;
+    font-size: 10pt;
+    font-weight: 700;
+    border-bottom: 1pt solid #000;
+    background: #f0f0f0;
+  }
+
+  .address-section { padding: 3mm 4mm; border-bottom: 1pt solid #000; }
+
+  .from-block { font-size: 7.5pt; color: #444; margin-bottom: 3mm; }
+  .from-label { font-size: 6.5pt; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1mm; }
+
+  .to-block { font-size: 11pt; font-weight: 600; line-height: 1.4; }
+  .to-label { font-size: 7pt; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 1mm; font-weight: 400; }
+  .to-name { font-size: 13pt; font-weight: 700; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 3mm 4mm;
+    border-bottom: 1pt solid #000;
+    font-size: 8pt;
+  }
+
+  .meta-item { margin-bottom: 2mm; }
+  .meta-label { font-size: 6.5pt; text-transform: uppercase; color: #666; }
+  .meta-value { font-weight: 700; }
+
+  .barcode-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4mm;
+  }
+
+  .barcode-placeholder {
+    width: 90%;
+    height: 20mm;
+    background: repeating-linear-gradient(
+      90deg, #000 0, #000 0.6mm, transparent 0.6mm, transparent 1.2mm
+    );
+    margin-bottom: 2mm;
+  }
+
+  .tracking-number {
+    font-family: monospace;
+    font-size: 10pt;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  .instructions {
+    padding: 2mm 4mm;
+    font-size: 7.5pt;
+    color: #555;
+    border-top: 1pt dashed #999;
+    font-style: italic;
+  }
+</style>
+
+<div class="label">
+  <div class="carrier-bar">{{ carrier | default:'SHIPPING' }}</div>
+  <div class="service-bar">{{ service }}</div>
+
+  <div class="address-section">
+    <div class="from-block">
+      <div class="from-label">From</div>
+      <strong>{{ from.name }}</strong><br>
+      {{ from.address }}<br>
+      {{ from.city }}{{#if from.postalCode}} {{ from.postalCode }}{{/if}}<br>
+      {{#if from.country}}{{ from.country }}{{/if}}
+    </div>
+
+    <div class="to-block">
+      <div class="to-label">Ship To</div>
+      <div class="to-name">{{ to.name }}</div>
+      {{#if to.company}}{{ to.company }}<br>{{/if}}
+      {{ to.address }}<br>
+      {{ to.city }}{{#if to.postalCode}} {{ to.postalCode }}{{/if}}<br>
+      {{#if to.country}}{{ to.country }}{{/if}}
+      {{#if to.phone}}<br>Tel: {{ to.phone }}{{/if}}
+    </div>
+  </div>
+
+  <div class="meta-grid">
+    {{#if orderNumber}}
+    <div class="meta-item">
+      <div class="meta-label">Order #</div>
+      <div class="meta-value">{{ orderNumber }}</div>
+    </div>
+    {{/if}}
+    {{#if weight}}
+    <div class="meta-item">
+      <div class="meta-label">Weight</div>
+      <div class="meta-value">{{ weight }} {{ weightUnit }}</div>
+    </div>
+    {{/if}}
+    {{#if dimensions}}
+    <div class="meta-item">
+      <div class="meta-label">Dimensions</div>
+      <div class="meta-value">{{ dimensions }}</div>
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="barcode-section">
+    <div class="barcode-placeholder"></div>
+    <div class="tracking-number">{{ trackingNumber }}</div>
+  </div>
+
+  {{#if specialInstructions}}
+  <div class="instructions">{{ specialInstructions }}</div>
+  {{/if}}
+</div>

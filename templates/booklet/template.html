@@ -1,0 +1,63 @@
+---
+title: Booklet
+description: Multi-page brochure/booklet with bleed and crop marks for print
+variables:
+  title: ""
+  subtitle: ""
+  sections: []
+  bleed: 3
+  cropMarks: true
+  coverImage: ""
+  logo: ""
+---
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+    {{#if cropMarks}}marks: crop cross;{{/if}}
+    bleed: {{ bleed | default:3 }}mm;
+  }
+
+  body { font-family: 'Noto Sans', sans-serif; margin: 0; color: #1a1a1a; }
+
+  .cover-page {
+    width: 210mm; height: 297mm;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%),
+                {{#if coverImage}}url('{{ coverImage }}') center/cover{{else}}#1a2744{{/if}};
+    color: #fff;
+    padding: 20mm;
+    page-break-after: always;
+    box-sizing: border-box;
+  }
+
+  .cover-title { font-size: 32pt; font-weight: 800; line-height: 1.1; margin-bottom: 6pt; }
+  .cover-subtitle { font-size: 13pt; opacity: 0.9; }
+  .cover-logo { height: 24pt; margin-bottom: 16pt; }
+
+  .content-page { padding: 20mm; box-sizing: border-box; min-height: 297mm; page-break-after: always; }
+  .content-page:last-child { page-break-after: avoid; }
+
+  .section-title { font-size: 20pt; font-weight: 700; margin-bottom: 12pt; color: #1a2744; }
+  .section-body { font-size: 10pt; line-height: 1.7; color: #333; }
+  .section-body p { margin: 0 0 10pt; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16pt; }
+  .pull-image { width: 100%; border-radius: 4pt; margin-bottom: 10pt; }
+</style>
+
+<div class="cover-page">
+  {{#if logo}}<img class="cover-logo" src="{{ logo }}">{{/if}}
+  <div class="cover-title">{{ title }}</div>
+  {{#if subtitle}}<div class="cover-subtitle">{{ subtitle }}</div>{{/if}}
+</div>
+
+{{#each sections}}
+<div class="content-page">
+  <div class="section-title">{{ title }}</div>
+  {{#if image}}<img class="pull-image" src="{{ image }}">{{/if}}
+  <div class="section-body {{#if twoColumn}}two-col{{/if}}">
+    {{#each paragraphs}}<p>{{ this }}</p>{{/each}}
+  </div>
+</div>
+{{/each}}

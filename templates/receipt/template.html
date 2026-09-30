@@ -1,0 +1,133 @@
+---
+title: Receipt
+description: Point-of-sale style receipt, thermal-printer width compatible
+variables:
+  storeName: ""
+  storeAddress: ""
+  storePhone: ""
+  cashierName: ""
+  receiptNumber: ""
+  date: ""
+  items: []
+  subtotal: 0
+  tax: 0
+  taxRate: 0
+  discount: 0
+  total: 0
+  paymentMethod: ""
+  amountPaid: 0
+  change: 0
+  currency: "USD"
+  footerNote: "Thank you for your purchase!"
+---
+<style>
+  @page { size: 80mm auto; margin: 4mm; }
+
+  body {
+    font-family: 'Noto Sans Mono', 'Courier New', monospace;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: #000;
+    width: 72mm;
+    margin: 0;
+  }
+
+  .center { text-align: center; }
+  .right  { text-align: right; }
+  .bold   { font-weight: 700; }
+
+  .store-name { font-size: 13pt; font-weight: 700; margin-bottom: 1mm; }
+  .store-detail { font-size: 7.5pt; color: #333; }
+
+  .divider {
+    border-top: 1pt dashed #000;
+    margin: 3mm 0;
+  }
+
+  .meta-row { display: flex; justify-content: space-between; font-size: 7.5pt; margin-bottom: 1mm; }
+
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5mm;
+  }
+
+  .item-name { flex: 1; }
+  .item-qty  { width: 20mm; text-align: center; color: #555; font-size: 7.5pt; }
+  .item-total{ width: 20mm; text-align: right; font-weight: 600; }
+
+  .totals-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1mm;
+    font-size: 9pt;
+  }
+
+  .grand-total {
+    font-size: 12pt;
+    font-weight: 700;
+    border-top: 1.5pt solid #000;
+    padding-top: 2mm;
+    margin-top: 2mm;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 8pt;
+    margin-top: 4mm;
+    font-style: italic;
+  }
+
+  .barcode-strip {
+    height: 12mm;
+    background: repeating-linear-gradient(
+      90deg, #000 0, #000 0.4mm, transparent 0.4mm, transparent 0.8mm
+    );
+    margin: 3mm 0 1mm;
+  }
+</style>
+
+<div class="center">
+  <div class="store-name">{{ storeName }}</div>
+  {{#if storeAddress}}<div class="store-detail">{{ storeAddress }}</div>{{/if}}
+  {{#if storePhone}}<div class="store-detail">{{ storePhone }}</div>{{/if}}
+</div>
+
+<div class="divider"></div>
+
+<div class="meta-row"><span>Receipt #</span><span class="bold">{{ receiptNumber }}</span></div>
+<div class="meta-row"><span>Date</span><span>{{ date | date }}</span></div>
+{{#if cashierName}}<div class="meta-row"><span>Cashier</span><span>{{ cashierName }}</span></div>{{/if}}
+
+<div class="divider"></div>
+
+{{#each items}}
+<div class="item-row">
+  <span class="item-name">{{ name }}</span>
+</div>
+<div class="item-row">
+  <span class="item-qty">{{ qty }} × {{ unitPrice | currency }}</span>
+  <span class="item-total">{{ total | currency }}</span>
+</div>
+{{/each}}
+
+<div class="divider"></div>
+
+<div class="totals-row"><span>Subtotal</span><span>{{ subtotal | currency }}</span></div>
+{{#if discount}}<div class="totals-row"><span>Discount</span><span>-{{ discount | currency }}</span></div>{{/if}}
+{{#if taxRate}}<div class="totals-row"><span>Tax ({{ taxRate | percent }})</span><span>{{ tax | currency }}</span></div>{{/if}}
+
+<div class="totals-row grand-total"><span>TOTAL</span><span>{{ total | currency }}</span></div>
+
+<div class="divider"></div>
+
+{{#if paymentMethod}}<div class="meta-row"><span>Payment</span><span>{{ paymentMethod }}</span></div>{{/if}}
+{{#if amountPaid}}<div class="meta-row"><span>Paid</span><span>{{ amountPaid | currency }}</span></div>{{/if}}
+{{#if change}}<div class="meta-row"><span>Change</span><span>{{ change | currency }}</span></div>{{/if}}
+
+<div class="barcode-strip"></div>
+<div class="center" style="font-size: 7pt; font-family: monospace;">{{ receiptNumber }}</div>
+
+{{#if footerNote}}
+<div class="footer-note">{{ footerNote }}</div>
+{{/if}}

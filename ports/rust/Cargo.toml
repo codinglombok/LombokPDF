@@ -1,0 +1,47 @@
+[package]
+name        = "lombokpdf"
+version     = "1.0.0"
+edition     = "2021"
+rust-version = "1.75"
+authors     = ["Lombok Digital <hello@codinglombok.dev>"]
+description = "Lightweight, elegant, polyglot PDF generation — Apache 2.0"
+license     = "Apache-2.0"
+homepage    = "https://lombokpdf.dev"
+repository  = "https://github.com/codinglombok/lombokpdf"
+documentation = "https://docs.rs/lombokpdf"
+readme      = "README.md"
+keywords    = ["pdf", "html-to-pdf", "invoice", "i18n", "template"]
+categories  = ["text-processing", "rendering"]
+exclude     = ["tests/fixtures/*"]
+
+[lib]
+name = "lombokpdf"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# The Rust port calls the LLE core directly — no FFI overhead
+lle-core       = { path = "../../src/core/lle-rust", version = "1.0.0" }
+serde          = { version = "1.0", features = ["derive"] }
+serde_json     = "1.0"
+html5ever      = "0.27"
+comrak         = "0.29"          # Markdown (GFM)
+handlebars     = "6.1"           # Templating
+icu_segmenter  = "1.5"           # Unicode line-breaking (UAX #14)
+unicode-bidi   = "0.3"           # BiDi algorithm (UAX #9)
+thiserror      = "1.0"
+tokio          = { version = "1.39", features = ["fs", "rt-multi-thread"], optional = true }
+
+[features]
+default = ["async"]
+async   = ["dep:tokio"]
+
+[dev-dependencies]
+criterion = "0.5"
+tempfile  = "3.10"
+
+[[bench]]
+name = "conversion"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true

@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+vendor/
+.venv/
+__pycache__/
+*.pyc
+
+# Build outputs
+dist/
+build/
+target/
+*.tsbuildinfo
+out/
+
+# Test artifacts
+coverage/
+.nyc_output/
+benchmarks/results.json
+tests/snapshots/__diff_output__/
+
+# SBOM (regenerated per build)
+sbom.spdx.json
+sbom.spdx.json.sha256
+sbom-summary.md
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+*.p12
+*.pfx
+*.key
+!tests/fixtures/**/*.key
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Language-specific
+# Rust
+ports/rust/target/
+Cargo.lock
+
+# Go
+ports/go/*.exe
+
+# Java
+ports/java/target/
+*.class
+
+# .NET
+ports/dotnet/bin/
+ports/dotnet/obj/
+
+# Ruby
+ports/ruby/*.gem
+ports/ruby/.bundle/
+
+# Python
+ports/python/dist/
+ports/python/*.egg-info/
+ports/python/.pytest_cache/
+ports/python/.mypy_cache/
+ports/python/.ruff_cache/
+
+# Docker
+docker-compose.override.yml
+
+# Temp
+/tmp/
+*.tmp
