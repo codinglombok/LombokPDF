@@ -135,18 +135,18 @@
     "yaml": "^2.4.2"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/pdfkit": "^0.13.6",
+    "@types/node": "^26.6.3",
+    "@types/pdfkit": "^0.17.6",
     "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "@vitest/coverage-v8": "^2.0.5",
-    "eslint": "^9.8.0",
+    "@vitest/coverage-v8": "^5.0.2",
+    "eslint": "^10.11.0",
     "prettier": "^3.3.3",
     "tsup": "^8.2.4",
-    "typedoc": "^0.26.5",
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "typedoc": "^0.28.20",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
   },
   "peerDependencies": {
     "@lombok/charts": ">=1.0.0",
