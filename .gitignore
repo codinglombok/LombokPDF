@@ -79,3 +79,8 @@ docker-compose.override.yml
 # Temp
 /tmp/
 *.tmp
+
+# Dokumen internal (ADR-024)
+/map
+/docs/*architecture*.*
+/docs/*masterplan*.*
