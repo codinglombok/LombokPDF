@@ -13,6 +13,12 @@ Setiap kali mengerjakan sebuah repo Lombok, pastikan repo itu punya `CLAUDE.md` 
 catatan alur kerja ini (tambahkan bila belum ada) dan commit bersama pekerjaan di repo tersebut.
 Catatan tidak disebar ke repo yang tidak sedang dikerjakan.
 
+## Pesan commit dan PR
+
+Jangan menulis tautan sesi chat (baris `Claude-Session: https://claude.ai/code/session_...` atau
+tautan claude.ai lain) di pesan commit, deskripsi PR, komentar, atau berkas repo: tautan itu
+menunjuk ke percakapan pribadi pemilik. Baris `Co-Authored-By` boleh tetap ada.
+
 ## Salinan library Lombok (`src/vendor/`)
 
 - Berkas di `src/vendor/` adalah salinan dari library Lombok; jangan diubah di sini. Perbaiki di
