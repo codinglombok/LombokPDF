@@ -1,21 +1,21 @@
 /**
  * LombokPDF — Markdown Import Skill
- * Converts GitHub-Flavored Markdown to HTML for the LLE renderer.
+ * Converts CommonMark 0.31.2 + GitHub-Flavored Markdown to HTML for the LLE renderer,
+ * using LombokMarkDown (vendored in src/vendor/lombokmarkdown).
  */
 
-// Dynamic import so it's only loaded when the skill is used
-async function getMarked() {
-  const { marked } = await import('marked')
-  const { gfmHeadingId } = await import('marked-gfm-heading-id')
+import { markdownToHTML as renderMarkdown } from '../../vendor/lombokmarkdown/index.js'
 
-  marked.use(gfmHeadingId())
-
-  marked.setOptions({
-    gfm:     true,
-    breaks:  false,
-  })
-
-  return marked
+export interface MarkdownToHTMLOptions {
+  /**
+   * Pass raw HTML in the Markdown source through to the renderer (default true,
+   * so documents can carry `<style>`, `<div class>` and similar layout markup).
+   * Set to false for Markdown written by untrusted users: raw HTML is then
+   * shown as text.
+   */
+  html?: boolean
+  /** Render soft line breaks as `<br />` (default false). */
+  breaks?: boolean
 }
 
 /**
@@ -26,12 +26,19 @@ async function getMarked() {
  * - Fenced code blocks (with language class)
  * - Strikethrough
  * - Task lists
- * - Auto-links
- * - Heading IDs (for TOC linking)
+ * - Extended autolinks
+ * - GitHub-style heading IDs (for TOC linking)
+ *
+ * `javascript:`, `vbscript:`, `file:` and non-image `data:` link targets are always removed.
  */
-export async function markdownToHTML(md: string): Promise<string> {
-  const marked = await getMarked()
-  return marked.parse(md)
+export async function markdownToHTML(md: string, options: MarkdownToHTMLOptions = {}): Promise<string> {
+  return renderMarkdown(md, {
+    gfm:        true,
+    headingIds: true,
+    safeLinks:  true,
+    html:       options.html ?? true,
+    breaks:     options.breaks ?? false,
+  })
 }
 
 /**

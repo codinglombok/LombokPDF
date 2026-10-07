@@ -1,0 +1,1362 @@
+{
+ "name": "lombokmarkdown-vectors",
+ "version": 1,
+ "spec": "docs/SPEC_LombokMarkDown (sections 3-6)",
+ "functions": {
+  "html": "new Markdown(input, options).getHTML()",
+  "metadata": "new Markdown(input, options).getMetadata()",
+  "toc": "new Markdown(input, options).getTableOfContents()",
+  "ast": "new Markdown(input, options).getAST()"
+ },
+ "compare": "canonical JSON with object keys sorted",
+ "cases": [
+  {
+   "id": "html-001",
+   "fn": "html",
+   "input": "",
+   "expected": ""
+  },
+  {
+   "id": "html-002",
+   "fn": "html",
+   "input": "Hello",
+   "expected": "<p>Hello</p>\n"
+  },
+  {
+   "id": "html-003",
+   "fn": "html",
+   "input": "# Judul\n\nParagraf **tebal** dan *miring*.",
+   "expected": "<h1>Judul</h1>\n<p>Paragraf <strong>tebal</strong> dan <em>miring</em>.</p>\n"
+  },
+  {
+   "id": "html-004",
+   "fn": "html",
+   "input": "a\nb",
+   "expected": "<p>a\nb</p>\n"
+  },
+  {
+   "id": "html-005",
+   "fn": "html",
+   "input": "a\nb",
+   "options": {
+    "breaks": true
+   },
+   "expected": "<p>a<br />\nb</p>\n"
+  },
+  {
+   "id": "html-006",
+   "fn": "html",
+   "input": "a  \nb",
+   "expected": "<p>a<br />\nb</p>\n"
+  },
+  {
+   "id": "html-007",
+   "fn": "html",
+   "input": "a\\\nb",
+   "expected": "<p>a<br />\nb</p>\n"
+  },
+  {
+   "id": "html-008",
+   "fn": "html",
+   "input": "<b>bold</b>",
+   "note": "raw inline HTML escaped by default",
+   "expected": "<p>&lt;b&gt;bold&lt;/b&gt;</p>\n"
+  },
+  {
+   "id": "html-009",
+   "fn": "html",
+   "input": "<b>bold</b>",
+   "options": {
+    "html": true
+   },
+   "expected": "<p><b>bold</b></p>\n"
+  },
+  {
+   "id": "html-010",
+   "fn": "html",
+   "input": "<div>\nblock\n</div>",
+   "note": "raw HTML block escaped by default",
+   "expected": "<p>&lt;div&gt;\nblock\n&lt;/div&gt;</p>\n"
+  },
+  {
+   "id": "html-011",
+   "fn": "html",
+   "input": "<div>\nblock\n</div>",
+   "options": {
+    "html": true
+   },
+   "expected": "<div>\nblock\n</div>\n"
+  },
+  {
+   "id": "html-012",
+   "fn": "html",
+   "input": "<script>alert(1)</script>",
+   "expected": "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>\n"
+  },
+  {
+   "id": "html-013",
+   "fn": "html",
+   "input": "<script>alert(1)</script>",
+   "options": {
+    "html": true
+   },
+   "note": "GFM tag filter",
+   "expected": "&lt;script>alert(1)&lt;/script>\n"
+  },
+  {
+   "id": "html-014",
+   "fn": "html",
+   "input": "<script>alert(1)</script>",
+   "options": {
+    "html": true,
+    "gfm": false
+   },
+   "note": "no tag filter without GFM",
+   "expected": "<script>alert(1)</script>\n"
+  },
+  {
+   "id": "html-015",
+   "fn": "html",
+   "input": "x <iframe src=a> y",
+   "options": {
+    "html": true
+   },
+   "expected": "<p>x &lt;iframe src=a> y</p>\n"
+  },
+  {
+   "id": "html-016",
+   "fn": "html",
+   "input": "x <IFRAME> y",
+   "options": {
+    "html": true
+   },
+   "note": "tag filter is case-insensitive",
+   "expected": "<p>x &lt;IFRAME> y</p>\n"
+  },
+  {
+   "id": "html-017",
+   "fn": "html",
+   "input": "<!-- c -->",
+   "expected": "<p>&lt;!-- c --&gt;</p>\n"
+  },
+  {
+   "id": "html-018",
+   "fn": "html",
+   "input": "[a](javascript:alert(1))",
+   "expected": "<p><a href=\"\">a</a></p>\n"
+  },
+  {
+   "id": "html-019",
+   "fn": "html",
+   "input": "[a](JaVaScRiPt:alert(1))",
+   "expected": "<p><a href=\"\">a</a></p>\n"
+  },
+  {
+   "id": "html-020",
+   "fn": "html",
+   "input": "[a](vbscript:x)",
+   "expected": "<p><a href=\"\">a</a></p>\n"
+  },
+  {
+   "id": "html-021",
+   "fn": "html",
+   "input": "[a](file:///etc/passwd)",
+   "expected": "<p><a href=\"\">a</a></p>\n"
+  },
+  {
+   "id": "html-022",
+   "fn": "html",
+   "input": "[a](data:text/html;base64,PHA+)",
+   "expected": "<p><a href=\"\">a</a></p>\n"
+  },
+  {
+   "id": "html-023",
+   "fn": "html",
+   "input": "![a](data:image/png;base64,iVBO)",
+   "expected": "<p><img src=\"data:image/png;base64,iVBO\" alt=\"a\" /></p>\n"
+  },
+  {
+   "id": "html-024",
+   "fn": "html",
+   "input": "![a](data:image/svg+xml;base64,PHN2Zz4=)",
+   "note": "SVG data URI is unsafe",
+   "expected": "<p><img src=\"\" alt=\"a\" /></p>\n"
+  },
+  {
+   "id": "html-025",
+   "fn": "html",
+   "input": "[a](javascript:alert(1))",
+   "options": {
+    "safeLinks": false
+   },
+   "expected": "<p><a href=\"javascript:alert(1)\">a</a></p>\n"
+  },
+  {
+   "id": "html-026",
+   "fn": "html",
+   "input": "<javascript:alert(1)>",
+   "note": "autolink with unsafe scheme",
+   "expected": "<p><a href=\"\">javascript:alert(1)</a></p>\n"
+  },
+  {
+   "id": "html-027",
+   "fn": "html",
+   "input": "[a](https://example.com/?q=1&x=2 \"T\")",
+   "expected": "<p><a href=\"https://example.com/?q=1&amp;x=2\" title=\"T\">a</a></p>\n"
+  },
+  {
+   "id": "html-028",
+   "fn": "html",
+   "input": "[a](<b c>)",
+   "expected": "<p><a href=\"b%20c\">a</a></p>\n"
+  },
+  {
+   "id": "html-029",
+   "fn": "html",
+   "input": "[a](/ä)",
+   "expected": "<p><a href=\"/%C3%A4\">a</a></p>\n"
+  },
+  {
+   "id": "html-030",
+   "fn": "html",
+   "input": "[x]\n\n[x]: /url 'judul'",
+   "expected": "<p><a href=\"/url\" title=\"judul\">x</a></p>\n"
+  },
+  {
+   "id": "html-031",
+   "fn": "html",
+   "input": "[X]\n\n[x]: /url",
+   "note": "labels are case-insensitive",
+   "expected": "<p><a href=\"/url\">X</a></p>\n"
+  },
+  {
+   "id": "html-032",
+   "fn": "html",
+   "input": "&copy; &#169; &#xA9; &bogus;",
+   "expected": "<p>© © © &amp;bogus;</p>\n"
+  },
+  {
+   "id": "html-033",
+   "fn": "html",
+   "input": "a & b < c > d \" e",
+   "expected": "<p>a &amp; b &lt; c &gt; d &quot; e</p>\n"
+  },
+  {
+   "id": "html-034",
+   "fn": "html",
+   "input": "\\*tidak miring\\*",
+   "expected": "<p>*tidak miring*</p>\n"
+  },
+  {
+   "id": "html-035",
+   "fn": "html",
+   "input": "`kode <b>`",
+   "expected": "<p><code>kode &lt;b&gt;</code></p>\n"
+  },
+  {
+   "id": "html-036",
+   "fn": "html",
+   "input": "```js\nconst a = 1 < 2\n```",
+   "expected": "<pre><code class=\"language-js\">const a = 1 &lt; 2\n</code></pre>\n"
+  },
+  {
+   "id": "html-037",
+   "fn": "html",
+   "input": "```\nplain\n```",
+   "expected": "<pre><code>plain\n</code></pre>\n"
+  },
+  {
+   "id": "html-038",
+   "fn": "html",
+   "input": "    indented",
+   "expected": "<pre><code>indented\n</code></pre>\n"
+  },
+  {
+   "id": "html-039",
+   "fn": "html",
+   "input": "> kutipan\n> dua",
+   "expected": "<blockquote>\n<p>kutipan\ndua</p>\n</blockquote>\n"
+  },
+  {
+   "id": "html-040",
+   "fn": "html",
+   "input": "---",
+   "expected": "<hr />\n"
+  },
+  {
+   "id": "html-041",
+   "fn": "html",
+   "input": "- a\n- b",
+   "expected": "<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n"
+  },
+  {
+   "id": "html-042",
+   "fn": "html",
+   "input": "- a\n\n- b",
+   "expected": "<ul>\n<li>\n<p>a</p>\n</li>\n<li>\n<p>b</p>\n</li>\n</ul>\n"
+  },
+  {
+   "id": "html-043",
+   "fn": "html",
+   "input": "1. a\n2. b",
+   "expected": "<ol>\n<li>a</li>\n<li>b</li>\n</ol>\n"
+  },
+  {
+   "id": "html-044",
+   "fn": "html",
+   "input": "3. a\n4. b",
+   "expected": "<ol start=\"3\">\n<li>a</li>\n<li>b</li>\n</ol>\n"
+  },
+  {
+   "id": "html-045",
+   "fn": "html",
+   "input": "- a\n  - b",
+   "expected": "<ul>\n<li>a\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ul>\n"
+  },
+  {
+   "id": "html-046",
+   "fn": "html",
+   "input": "- [ ] todo\n- [x] done",
+   "expected": "<ul>\n<li><input disabled=\"\" type=\"checkbox\"> todo</li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> done</li>\n</ul>\n"
+  },
+  {
+   "id": "html-047",
+   "fn": "html",
+   "input": "- [X] upper",
+   "expected": "<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> upper</li>\n</ul>\n"
+  },
+  {
+   "id": "html-048",
+   "fn": "html",
+   "input": "- [ ] todo",
+   "options": {
+    "gfm": false
+   },
+   "expected": "<ul>\n<li>[ ] todo</li>\n</ul>\n"
+  },
+  {
+   "id": "html-049",
+   "fn": "html",
+   "input": "- [ ]",
+   "note": "task marker needs content",
+   "expected": "<ul>\n<li>[ ]</li>\n</ul>\n"
+  },
+  {
+   "id": "html-050",
+   "fn": "html",
+   "input": "~~hapus~~ ~juga~",
+   "expected": "<p><del>hapus</del> <del>juga</del></p>\n"
+  },
+  {
+   "id": "html-051",
+   "fn": "html",
+   "input": "~~~x~~~",
+   "note": "three tildes open a fenced code block",
+   "expected": "<pre><code class=\"language-x~~~\"></code></pre>\n"
+  },
+  {
+   "id": "html-052",
+   "fn": "html",
+   "input": "a ~~~b~~~ c",
+   "note": "three-tilde runs are not strikethrough",
+   "expected": "<p>a ~~~b~~~ c</p>\n"
+  },
+  {
+   "id": "html-053",
+   "fn": "html",
+   "input": "~~hapus~~",
+   "options": {
+    "gfm": false
+   },
+   "expected": "<p>~~hapus~~</p>\n"
+  },
+  {
+   "id": "html-054",
+   "fn": "html",
+   "input": "| a | b |\n| :- | -: |\n| 1 | 2 |",
+   "expected": "<table>\n<thead>\n<tr>\n<th align=\"left\">a</th>\n<th align=\"right\">b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"left\">1</td>\n<td align=\"right\">2</td>\n</tr>\n</tbody>\n</table>\n"
+  },
+  {
+   "id": "html-055",
+   "fn": "html",
+   "input": "| a |\n| :-: |",
+   "expected": "<table>\n<thead>\n<tr>\n<th align=\"center\">a</th>\n</tr>\n</thead>\n</table>\n"
+  },
+  {
+   "id": "html-056",
+   "fn": "html",
+   "input": "| a | b |\n| - | - |\n| <x> | **y** |",
+   "expected": "<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>&lt;x&gt;</td>\n<td><strong>y</strong></td>\n</tr>\n</tbody>\n</table>\n"
+  },
+  {
+   "id": "html-057",
+   "fn": "html",
+   "input": "teks\n| a |\n| - |",
+   "note": "header row is the last line of a paragraph",
+   "expected": "<p>teks</p>\n<table>\n<thead>\n<tr>\n<th>a</th>\n</tr>\n</thead>\n</table>\n"
+  },
+  {
+   "id": "html-058",
+   "fn": "html",
+   "input": "| a | b |\n| - |",
+   "note": "cell count mismatch: not a table",
+   "expected": "<p>| a | b |\n| - |</p>\n"
+  },
+  {
+   "id": "html-059",
+   "fn": "html",
+   "input": "| a |\n| - |",
+   "options": {
+    "gfm": false
+   },
+   "expected": "<p>| a |\n| - |</p>\n"
+  },
+  {
+   "id": "html-060",
+   "fn": "html",
+   "input": "www.example.com",
+   "expected": "<p><a href=\"http://www.example.com\">www.example.com</a></p>\n"
+  },
+  {
+   "id": "html-061",
+   "fn": "html",
+   "input": "lihat https://example.com/a.",
+   "expected": "<p>lihat <a href=\"https://example.com/a\">https://example.com/a</a>.</p>\n"
+  },
+  {
+   "id": "html-062",
+   "fn": "html",
+   "input": "surat: nama@example.org",
+   "expected": "<p>surat: <a href=\"mailto:nama@example.org\">nama@example.org</a></p>\n"
+  },
+  {
+   "id": "html-063",
+   "fn": "html",
+   "input": "www.example.com",
+   "options": {
+    "gfm": false
+   },
+   "expected": "<p>www.example.com</p>\n"
+  },
+  {
+   "id": "html-064",
+   "fn": "html",
+   "input": "[www.example.com](/x)",
+   "note": "no autolink inside links",
+   "expected": "<p><a href=\"/x\">www.example.com</a></p>\n"
+  },
+  {
+   "id": "html-065",
+   "fn": "html",
+   "input": "`www.example.com`",
+   "expected": "<p><code>www.example.com</code></p>\n"
+  },
+  {
+   "id": "html-066",
+   "fn": "html",
+   "input": "# A\n## B",
+   "options": {
+    "headingIds": true
+   },
+   "expected": "<h1 id=\"a\">A</h1>\n<h2 id=\"b\">B</h2>\n"
+  },
+  {
+   "id": "html-067",
+   "fn": "html",
+   "input": "# Halo Dunia!\n# Halo Dunia!\n# Halo Dunia!",
+   "options": {
+    "headingIds": true
+   },
+   "expected": "<h1 id=\"halo-dunia\">Halo Dunia!</h1>\n<h1 id=\"halo-dunia-1\">Halo Dunia!</h1>\n<h1 id=\"halo-dunia-2\">Halo Dunia!</h1>\n"
+  },
+  {
+   "id": "html-068",
+   "fn": "html",
+   "input": "# Ringkasan *Eksekutif*",
+   "options": {
+    "headingIds": true
+   },
+   "expected": "<h1 id=\"ringkasan-eksekutif\">Ringkasan <em>Eksekutif</em></h1>\n"
+  },
+  {
+   "id": "html-069",
+   "fn": "html",
+   "input": "# Café 日本 2026",
+   "options": {
+    "headingIds": true
+   },
+   "expected": "<h1 id=\"café-日本-2026\">Café 日本 2026</h1>\n"
+  },
+  {
+   "id": "html-070",
+   "fn": "html",
+   "input": "# a_b-c d",
+   "options": {
+    "headingIds": true
+   },
+   "expected": "<h1 id=\"a_b-c-d\">a_b-c d</h1>\n"
+  },
+  {
+   "id": "html-071",
+   "fn": "html",
+   "input": "# \"Quote\" & <tag>",
+   "options": {
+    "headingIds": true
+   },
+   "note": "raw HTML is not part of the heading text used for the slug",
+   "expected": "<h1 id=\"quote--\">&quot;Quote&quot; &amp; &lt;tag&gt;</h1>\n"
+  },
+  {
+   "id": "html-072",
+   "fn": "html",
+   "input": "# x\n# x-1\n# x",
+   "options": {
+    "headingIds": true
+   },
+   "note": "a generated suffix never collides with an existing slug",
+   "expected": "<h1 id=\"x\">x</h1>\n<h1 id=\"x-1\">x-1</h1>\n<h1 id=\"x-2\">x</h1>\n"
+  },
+  {
+   "id": "html-073",
+   "fn": "html",
+   "input": "Judul\n=====",
+   "expected": "<h1>Judul</h1>\n"
+  },
+  {
+   "id": "html-074",
+   "fn": "html",
+   "input": "a\u0000b",
+   "note": "NUL replaced",
+   "expected": "<p>a�b</p>\n"
+  },
+  {
+   "id": "html-075",
+   "fn": "html",
+   "input": "é́ 😀",
+   "expected": "<p>é́ 😀</p>\n"
+  },
+  {
+   "id": "html-076",
+   "fn": "html",
+   "input": "*a **b** c*",
+   "expected": "<p><em>a <strong>b</strong> c</em></p>\n"
+  },
+  {
+   "id": "html-077",
+   "fn": "html",
+   "input": "**unclosed",
+   "expected": "<p>**unclosed</p>\n"
+  },
+  {
+   "id": "html-078",
+   "fn": "html",
+   "input": "*",
+   "expected": "<ul>\n<li></li>\n</ul>\n"
+  },
+  {
+   "id": "html-079",
+   "fn": "html",
+   "input": "![gambar *alt*](/i.png \"t\")",
+   "expected": "<p><img src=\"/i.png\" alt=\"gambar alt\" title=\"t\" /></p>\n"
+  },
+  {
+   "id": "metadata-001",
+   "fn": "metadata",
+   "input": "",
+   "expected": {
+    "headings": [],
+    "links": [],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-002",
+   "fn": "metadata",
+   "input": "# Satu\n## Dua *tiga*\n### `kode`",
+   "expected": {
+    "headings": [
+     {
+      "level": 1,
+      "text": "Satu"
+     },
+     {
+      "level": 2,
+      "text": "Dua tiga"
+     },
+     {
+      "level": 3,
+      "text": "kode"
+     }
+    ],
+    "links": [],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-003",
+   "fn": "metadata",
+   "input": "[a](/x) [b **c**](/y \"T\")",
+   "expected": {
+    "headings": [],
+    "links": [
+     {
+      "text": "a",
+      "url": "/x"
+     },
+     {
+      "text": "b c",
+      "url": "/y",
+      "title": "T"
+     }
+    ],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-004",
+   "fn": "metadata",
+   "input": "![a](/i.png) ![](/j.png \"J\")",
+   "expected": {
+    "headings": [],
+    "links": [],
+    "images": [
+     {
+      "alt": "a",
+      "src": "/i.png"
+     },
+     {
+      "alt": "",
+      "src": "/j.png",
+      "title": "J"
+     }
+    ],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-005",
+   "fn": "metadata",
+   "input": "```py title\nprint(1)\n```\n\n    x\n    y",
+   "expected": {
+    "headings": [],
+    "links": [],
+    "images": [],
+    "codeBlocks": [
+     {
+      "lang": "py",
+      "code": "print(1)"
+     },
+     {
+      "code": "x\ny"
+     }
+    ]
+   }
+  },
+  {
+   "id": "metadata-006",
+   "fn": "metadata",
+   "input": "<https://a.example> www.b.example",
+   "expected": {
+    "headings": [],
+    "links": [
+     {
+      "text": "https://a.example",
+      "url": "https://a.example"
+     },
+     {
+      "text": "www.b.example",
+      "url": "http://www.b.example"
+     }
+    ],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-007",
+   "fn": "metadata",
+   "input": "[x](javascript:alert(1))",
+   "expected": {
+    "headings": [],
+    "links": [
+     {
+      "text": "x",
+      "url": ""
+     }
+    ],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-008",
+   "fn": "metadata",
+   "input": "[x](javascript:alert(1))",
+   "options": {
+    "safeLinks": false
+   },
+   "expected": {
+    "headings": [],
+    "links": [
+     {
+      "text": "x",
+      "url": "javascript:alert(1)"
+     }
+    ],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-009",
+   "fn": "metadata",
+   "input": "[![logo](/l.png)](/home)",
+   "expected": {
+    "headings": [],
+    "links": [
+     {
+      "text": "logo",
+      "url": "/home"
+     }
+    ],
+    "images": [
+     {
+      "alt": "logo",
+      "src": "/l.png"
+     }
+    ],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-010",
+   "fn": "metadata",
+   "input": "> # Dalam kutipan\n- ## Dalam daftar",
+   "expected": {
+    "headings": [
+     {
+      "level": 1,
+      "text": "Dalam kutipan"
+     },
+     {
+      "level": 2,
+      "text": "Dalam daftar"
+     }
+    ],
+    "links": [],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "metadata-011",
+   "fn": "metadata",
+   "input": "Judul\n---",
+   "expected": {
+    "headings": [
+     {
+      "level": 2,
+      "text": "Judul"
+     }
+    ],
+    "links": [],
+    "images": [],
+    "codeBlocks": []
+   }
+  },
+  {
+   "id": "toc-001",
+   "fn": "toc",
+   "input": "",
+   "expected": []
+  },
+  {
+   "id": "toc-002",
+   "fn": "toc",
+   "input": "# A\n## B\n## C\n# D",
+   "expected": [
+    {
+     "level": 1,
+     "text": "A",
+     "id": "a",
+     "children": [
+      {
+       "level": 2,
+       "text": "B",
+       "id": "b",
+       "children": []
+      },
+      {
+       "level": 2,
+       "text": "C",
+       "id": "c",
+       "children": []
+      }
+     ]
+    },
+    {
+     "level": 1,
+     "text": "D",
+     "id": "d",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "toc-003",
+   "fn": "toc",
+   "input": "## A\n# B\n### C",
+   "expected": [
+    {
+     "level": 2,
+     "text": "A",
+     "id": "a",
+     "children": []
+    },
+    {
+     "level": 1,
+     "text": "B",
+     "id": "b",
+     "children": [
+      {
+       "level": 3,
+       "text": "C",
+       "id": "c",
+       "children": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "toc-004",
+   "fn": "toc",
+   "input": "# A\n### B\n## C",
+   "expected": [
+    {
+     "level": 1,
+     "text": "A",
+     "id": "a",
+     "children": [
+      {
+       "level": 3,
+       "text": "B",
+       "id": "b",
+       "children": []
+      },
+      {
+       "level": 2,
+       "text": "C",
+       "id": "c",
+       "children": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "toc-005",
+   "fn": "toc",
+   "input": "# Sama\n## Sama\n# Sama",
+   "expected": [
+    {
+     "level": 1,
+     "text": "Sama",
+     "id": "sama",
+     "children": [
+      {
+       "level": 2,
+       "text": "Sama",
+       "id": "sama-1",
+       "children": []
+      }
+     ]
+    },
+    {
+     "level": 1,
+     "text": "Sama",
+     "id": "sama-2",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "toc-006",
+   "fn": "toc",
+   "input": "### Hanya tiga",
+   "expected": [
+    {
+     "level": 3,
+     "text": "Hanya tiga",
+     "id": "hanya-tiga",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "toc-007",
+   "fn": "toc",
+   "input": "# Langkah 1: Instalasi",
+   "expected": [
+    {
+     "level": 1,
+     "text": "Langkah 1: Instalasi",
+     "id": "langkah-1-instalasi",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "ast-001",
+   "fn": "ast",
+   "input": "",
+   "expected": []
+  },
+  {
+   "id": "ast-002",
+   "fn": "ast",
+   "input": "Hi *you*",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "text",
+       "value": "Hi "
+      },
+      {
+       "type": "emphasis",
+       "children": [
+        {
+         "type": "text",
+         "value": "you"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-003",
+   "fn": "ast",
+   "input": "## T",
+   "expected": [
+    {
+     "type": "heading",
+     "depth": 2,
+     "children": [
+      {
+       "type": "text",
+       "value": "T"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-004",
+   "fn": "ast",
+   "input": "```js x\ncode\n```",
+   "expected": [
+    {
+     "type": "codeBlock",
+     "value": "code\n",
+     "lang": "js",
+     "meta": "js x"
+    }
+   ]
+  },
+  {
+   "id": "ast-005",
+   "fn": "ast",
+   "input": "---",
+   "expected": [
+    {
+     "type": "thematicBreak"
+    }
+   ]
+  },
+  {
+   "id": "ast-006",
+   "fn": "ast",
+   "input": "- a\n- [x] b",
+   "expected": [
+    {
+     "type": "list",
+     "ordered": false,
+     "loose": false,
+     "children": [
+      {
+       "type": "listItem",
+       "children": [
+        {
+         "type": "paragraph",
+         "children": [
+          {
+           "type": "text",
+           "value": "a"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "checked": true,
+       "children": [
+        {
+         "type": "paragraph",
+         "children": [
+          {
+           "type": "text",
+           "value": "b"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-007",
+   "fn": "ast",
+   "input": "2. a\n\n3. b",
+   "expected": [
+    {
+     "type": "list",
+     "ordered": true,
+     "loose": true,
+     "start": 2,
+     "children": [
+      {
+       "type": "listItem",
+       "children": [
+        {
+         "type": "paragraph",
+         "children": [
+          {
+           "type": "text",
+           "value": "a"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "listItem",
+       "children": [
+        {
+         "type": "paragraph",
+         "children": [
+          {
+           "type": "text",
+           "value": "b"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-008",
+   "fn": "ast",
+   "input": "> q",
+   "expected": [
+    {
+     "type": "blockquote",
+     "children": [
+      {
+       "type": "paragraph",
+       "children": [
+        {
+         "type": "text",
+         "value": "q"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-009",
+   "fn": "ast",
+   "input": "a\nb  \nc",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "text",
+       "value": "a"
+      },
+      {
+       "type": "softBreak"
+      },
+      {
+       "type": "text",
+       "value": "b"
+      },
+      {
+       "type": "lineBreak"
+      },
+      {
+       "type": "text",
+       "value": "c"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-010",
+   "fn": "ast",
+   "input": "[l](/u \"t\") ![i](/p)",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "link",
+       "href": "/u",
+       "title": "t",
+       "children": [
+        {
+         "type": "text",
+         "value": "l"
+        }
+       ]
+      },
+      {
+       "type": "text",
+       "value": " "
+      },
+      {
+       "type": "image",
+       "href": "/p",
+       "alt": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-011",
+   "fn": "ast",
+   "input": "`c` ~~d~~ **s**",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "code",
+       "value": "c",
+       "inline": true
+      },
+      {
+       "type": "text",
+       "value": " "
+      },
+      {
+       "type": "delete",
+       "children": [
+        {
+         "type": "text",
+         "value": "d"
+        }
+       ]
+      },
+      {
+       "type": "text",
+       "value": " "
+      },
+      {
+       "type": "strong",
+       "children": [
+        {
+         "type": "text",
+         "value": "s"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-012",
+   "fn": "ast",
+   "input": "| h |\n| :- |\n| v |",
+   "expected": [
+    {
+     "type": "table",
+     "children": [
+      {
+       "type": "tableRow",
+       "header": true,
+       "children": [
+        {
+         "type": "tableCell",
+         "header": true,
+         "align": "left",
+         "children": [
+          {
+           "type": "text",
+           "value": "h"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "tableRow",
+       "header": false,
+       "children": [
+        {
+         "type": "tableCell",
+         "header": false,
+         "align": "left",
+         "children": [
+          {
+           "type": "text",
+           "value": "v"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-013",
+   "fn": "ast",
+   "input": "<div>x</div>\n\n<b>y</b>",
+   "expected": [
+    {
+     "type": "html",
+     "value": "<div>x</div>"
+    },
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "html",
+       "value": "<b>",
+       "inline": true
+      },
+      {
+       "type": "text",
+       "value": "y"
+      },
+      {
+       "type": "html",
+       "value": "</b>",
+       "inline": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-014",
+   "fn": "ast",
+   "input": "[x](javascript:alert(1))",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "link",
+       "href": "",
+       "children": [
+        {
+         "type": "text",
+         "value": "x"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-015",
+   "fn": "ast",
+   "input": "[x]: /u\n\n[x]",
+   "note": "reference definitions leave no node",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "link",
+       "href": "/u",
+       "children": [
+        {
+         "type": "text",
+         "value": "x"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-016",
+   "fn": "ast",
+   "input": "a &amp; b",
+   "options": {
+    "gfm": false
+   },
+   "note": "without GFM adjacent text nodes are not merged",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "text",
+       "value": "a "
+      },
+      {
+       "type": "text",
+       "value": "&"
+      },
+      {
+       "type": "text",
+       "value": " b"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ast-017",
+   "fn": "ast",
+   "input": "a &amp; b",
+   "note": "with GFM adjacent text nodes are merged",
+   "expected": [
+    {
+     "type": "paragraph",
+     "children": [
+      {
+       "type": "text",
+       "value": "a & b"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

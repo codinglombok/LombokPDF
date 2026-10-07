@@ -9,9 +9,7 @@
  *           running elements, generated content, CSS counters.
  */
 
-import type { DefaultTreeAdapterMap } from 'parse5'
-
-type Node = DefaultTreeAdapterMap['node']
+import type { HtmlNode } from '../../vendor/lombokhtml/index.js'
 
 export interface CSSPropertyMap {
   [selector: string]: Record<string, string>
@@ -41,7 +39,7 @@ export interface CSSOM {
 }
 
 export const CSSOMParser = {
-  parse(tree: Node, tokens: Record<string, string> = {}): CSSOM {
+  parse(tree: HtmlNode, tokens: Record<string, string> = {}): CSSOM {
     const rules: CSSPropertyMap = {}
     const pages: Record<string, ComputedPageRules> = {}
 
@@ -72,21 +70,13 @@ export const CSSOMParser = {
   },
 }
 
-function collectStyleBlocks(node: any): string[] {
+function collectStyleBlocks(tree: HtmlNode): string[] {
   const blocks: string[] = []
-  if (!node) return blocks
-
-  if (node.tagName === 'style') {
-    const text = node.childNodes
-      ?.map((c: any) => c.value ?? '')
-      .join('') ?? ''
+  for (const el of tree.elements()) {
+    if (!el.is('style')) continue
+    const text = el.children.map(c => (c.kind === 'text' ? c.data : '')).join('')
     if (text) blocks.push(text)
   }
-
-  for (const child of node.childNodes ?? []) {
-    blocks.push(...collectStyleBlocks(child))
-  }
-
   return blocks
 }
 
@@ -113,12 +103,12 @@ function parseCSS(
     if (selector.startsWith('@page')) {
       // CSS Paged Media @page rule
       const pageName = selector.replace('@page', '').trim() || 'default'
-      pages[pageName] = {
-        margin: propMap['margin'],
-        size:   propMap['size'],
-        bleed:  propMap['bleed'],
-        marks:  propMap['marks'],
+      const page: ComputedPageRules = {}
+      for (const key of ['margin', 'size', 'bleed', 'marks'] as const) {
+        const value = propMap[key]
+        if (value !== undefined) page[key] = value
       }
+      pages[pageName] = page
     } else {
       rules[selector] = { ...(rules[selector] ?? {}), ...propMap }
     }

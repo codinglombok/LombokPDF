@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 vendor/
+# Salinan library Lombok tetap dilacak (docs/map_LombokPDF_v1.0.0.md bagian 3)
+!/src/vendor/
+!/tests/vendor/
 .venv/
 __pycache__/
 *.pyc

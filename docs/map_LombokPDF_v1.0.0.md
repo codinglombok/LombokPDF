@@ -278,7 +278,7 @@ L3  LombokPDFRender -------- (LombokPDFCore, LombokFont, LombokRaster, LombokIma
 | Fase | Isi | Kriteria selesai |
 |---|---|---|
 | F0 Kepatuhan | LombokPDF: 10 dokumen publik, `.gitignore` ADR-024, hapus emoji, README "Mengapa library ini?" dengan klaim jujur, `lombok doctor` lulus kecuali SPEC/vector | `scripts/lombok-doctor.sh LombokPDF` hanya gagal pada SPEC/vector |
-| F1 Pengganti cepat | Ganti `parse5`, `marked`, `gray-matter`, `mammoth`, `commander`, `chalk`, `ora`, `qrcode` dengan LombokHTML, LombokMarkDown, LombokDocx, LombokCLIParse, LombokQRCode; tutup celah front matter (LombokMarkDown) dan YAML (LombokSerde) | 8 dependensi pihak ketiga hilang, tes lama tetap lulus |
+| F1 Pengganti cepat (selesai, lihat bagian 12) | Ganti `parse5`, `marked`, `gray-matter`, `mammoth`, `commander`, `chalk`, `ora`, `qrcode` dengan LombokHTML, LombokMarkDown, LombokDocx, LombokCLIParse, LombokQRCode; tutup celah front matter (LombokMarkDown) dan YAML (LombokSerde) | 8 dependensi pihak ketiga hilang, tes lama tetap lulus |
 | F2 Fondasi teks dan objek | N2 LombokUnicode, N15 LombokTemplate, N1 LombokPDFCore, perombakan LombokEncryptDecrypt (CBC, SHA-2 lengkap) | `pdf-lib`, `handlebars`, `bidi-js` hilang; merge/split/rotate/forms/encrypt berjalan di LombokPDFCore |
 | F3 Font dan gaya | N3 LombokFont, D1 LombokFontsData, N10 LombokColor, N6 LombokCSSOM | Font tersemat ter-subset; CSS terhitung untuk semua templat |
 | F4 Mesin layout | N7 LombokLayout (block, inline, tabel, paginasi, GCPM), backend PDF di LombokPDF; N4 LombokShape fase a dan b | `pdfkit` hilang; 12 templat ter-render oleh mesin sendiri; Arab dan Ibrani benar |
@@ -289,5 +289,30 @@ L3  LombokPDFRender -------- (LombokPDFCore, LombokFont, LombokRaster, LombokIma
 ## 11. Jalur kontrak normatif (target)
 
 `docs/SPEC_LombokPDF_v2.0.0.md` -> `vectors/lombokpdf-vectors-v1.json` (sha256 di SPEC; masukan HTML/CSS/data dan SHA-256 byte PDF keluaran deterministik) -> runner `tests/vectors.test.ts` dan runner per port.
+
+## 12. Status F1
+
+Selesai: 10 dependensi runtime pihak ketiga dihapus (`parse5`, `marked`, `marked-gfm-heading-id`, `gray-matter`, `yaml`, `mammoth`, `commander`, `chalk`, `ora`, `qrcode`). Sisa runtime pihak ketiga: `pdfkit`, `pdf-lib`, `sharp`, `handlebars`, `bidi-js`, `hyphen`, `@types/hyphen`, `jsbarcode` (F2-F6).
+
+| Pengganti | Cara pakai | Bukti |
+|---|---|---|
+| LombokHTML 0.2.0 (ad2bc25) | salinan `src/vendor/lombokhtml` | 228 vector asal |
+| LombokMarkDown 2.0.0 (4fceb72) | salinan `src/vendor/lombokmarkdown` | 114 vector asal |
+| LombokDocx 1.1.0 (16e37bd) | salinan `src/vendor/lombokdocx` | 163 vector asal |
+| LombokCLIParse 0.2.0 (86110d2) | salinan `src/vendor/lombokcliparse` | 134 vector asal |
+| LombokQRCode 0.2.1 | dependensi npm `lombokqrcode` (sudah terbit) | decode ulang PDF oleh decoder independen |
+| YAML subset + front matter | modul sementara `src/templates/front-matter.ts` | sama dengan `gray-matter` untuk 12 templat bawaan |
+
+Library yang belum terbit di npm dipakai lewat salinan (bagian 3), dan diganti menjadi dependensi npm setelah terbit. Total 639 kasus vector asal lulus terhadap salinan (`tests/vendor/vendor-vectors.test.ts`); `npm run audit:vendor` memastikan salinan tidak disunting lokal.
+
+Celah yang ditemukan selama F1, untuk ditutup di library asal:
+
+- LombokCLIParse: belum ada argumen posisional variadik (`merge <files...>`) dan alias `-v` untuk versi; sementara ditangani `normalizeArgv()` di `src/cli/index.ts`.
+- LombokSerde: belum ada YAML; `src/templates/front-matter.ts` ditulis tanpa impor LombokPDF agar dapat dipindah utuh beserta tesnya.
+- LombokMarkDown: belum ada pemisahan front matter.
+- Salinan TypeScript tidak lolos opsi `exactOptionalPropertyTypes` dan `noUncheckedIndexedAccess` milik LombokPDF, sehingga diberi `// @ts-nocheck`. Usulan: library asal mengaktifkan kedua opsi tersebut agar salinan dapat diperiksa tipe di repo pemakai.
+- Port Python LombokPDF masih memakai `python-mammoth`; penggantinya port Python LombokDocx (sudah ada di `LombokDocx/ports/python`).
+
+Kondisi lama yang belum berubah (bukan regresi F1): 24 galat `tsc`, 20 tes lama gagal (mock vitest 5 dan templat `invoice` yang tidak dapat di-parse Handlebars, F2), `tsup` gagal karena impor `node-forge`/`xmldom` yang tidak terdaftar, dan `npm ci` gagal karena tidak ada lockfile serta konflik peer TypeScript 7 dengan `@typescript-eslint`.
 
 *Lisensi dokumen: Apache-2.0 · © codinglombok*

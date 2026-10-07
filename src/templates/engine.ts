@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars'
-import matter from 'gray-matter'
+import { parseFrontMatter } from './front-matter.js'
 import { readFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -76,7 +76,7 @@ export const TemplateEngine = {
     const source = await this._loadTemplate(nameOrPath)
 
     // Parse front-matter (YAML) from template source
-    const { data: frontMatter, content } = matter(source)
+    const { data: frontMatter, content } = parseFrontMatter(source)
 
     // Merge front-matter defaults with provided data
     const mergedData = {

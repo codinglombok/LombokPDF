@@ -15,7 +15,10 @@ export interface QRCodeOptions {
   color?: string
   /** Background color (default: '#ffffff') */
   background?: string
-  /** Output as SVG (crisp) or PNG (default: 'svg') */
+  /**
+   * @deprecated Ignored since F1: the symbol is always drawn as vector
+   * rectangles, which is crisp at any zoom and needs no image library.
+   */
   renderer?: 'svg' | 'png'
   /** Where to embed in an existing document */
   position?: { page: number; x: number; y: number }
