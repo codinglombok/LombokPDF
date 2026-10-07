@@ -9,6 +9,10 @@ dikemas sebagai ZIP berisi struktur repo lengkap sesuai standar v3.6. Pemilik me
 tersebut sendiri lewat GitHub Desktop; setelah repo ada di GitHub, perbaikan dilakukan bersama
 di repo itu. Asisten tidak membuat repo GitHub baru lewat API.
 
+Setiap kali mengerjakan sebuah repo Lombok, pastikan repo itu punya `CLAUDE.md` yang memuat
+catatan alur kerja ini (tambahkan bila belum ada) dan commit bersama pekerjaan di repo tersebut.
+Catatan tidak disebar ke repo yang tidak sedang dikerjakan.
+
 ## Salinan library Lombok (`src/vendor/`)
 
 - Berkas di `src/vendor/` adalah salinan dari library Lombok; jangan diubah di sini. Perbaiki di
