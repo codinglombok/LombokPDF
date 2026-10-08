@@ -1,0 +1,4046 @@
+{
+ "name": "lombokhtml-vectors",
+ "version": 1,
+ "spec": "docs/SPEC_LombokHTML_v0.2.0.md",
+ "cases": [
+  {
+   "id": "decode-001",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&amp;"
+   },
+   "expected": {
+    "ok": "&"
+   }
+  },
+  {
+   "id": "decode-002",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&lt;&gt;&quot;&apos;"
+   },
+   "expected": {
+    "ok": "<>\"'"
+   }
+  },
+  {
+   "id": "decode-003",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&copy 2026"
+   },
+   "expected": {
+    "ok": "© 2026"
+   }
+  },
+  {
+   "id": "decode-004",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&notit;"
+   },
+   "expected": {
+    "ok": "¬it;"
+   }
+  },
+  {
+   "id": "decode-005",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&notin;"
+   },
+   "expected": {
+    "ok": "∉"
+   }
+  },
+  {
+   "id": "decode-006",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#65;&#x42;&#X43;"
+   },
+   "expected": {
+    "ok": "ABC"
+   }
+  },
+  {
+   "id": "decode-007",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#65"
+   },
+   "expected": {
+    "ok": "A"
+   }
+  },
+  {
+   "id": "decode-008",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#x;"
+   },
+   "expected": {
+    "ok": "&#x;"
+   }
+  },
+  {
+   "id": "decode-009",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#;"
+   },
+   "expected": {
+    "ok": "&#;"
+   }
+  },
+  {
+   "id": "decode-010",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#0;"
+   },
+   "expected": {
+    "ok": "�"
+   }
+  },
+  {
+   "id": "decode-011",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#x110000;"
+   },
+   "expected": {
+    "ok": "�"
+   }
+  },
+  {
+   "id": "decode-012",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#xD800;"
+   },
+   "expected": {
+    "ok": "�"
+   }
+  },
+  {
+   "id": "decode-013",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#128;"
+   },
+   "expected": {
+    "ok": "€"
+   }
+  },
+  {
+   "id": "decode-014",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#x9F;"
+   },
+   "expected": {
+    "ok": "Ÿ"
+   }
+  },
+  {
+   "id": "decode-015",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&bogus;"
+   },
+   "expected": {
+    "ok": "&bogus;"
+   }
+  },
+  {
+   "id": "decode-016",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&"
+   },
+   "expected": {
+    "ok": "&"
+   }
+  },
+  {
+   "id": "decode-017",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&&amp;"
+   },
+   "expected": {
+    "ok": "&&"
+   }
+  },
+  {
+   "id": "decode-018",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "a & b"
+   },
+   "expected": {
+    "ok": "a & b"
+   }
+  },
+  {
+   "id": "decode-019",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&NotNestedGreaterGreater;"
+   },
+   "expected": {
+    "ok": "⪢̸"
+   }
+  },
+  {
+   "id": "decode-020",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&Afr;"
+   },
+   "expected": {
+    "ok": "𝔄"
+   }
+  },
+  {
+   "id": "decode-021",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&ampx"
+   },
+   "expected": {
+    "ok": "&x"
+   }
+  },
+  {
+   "id": "decode-022",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&AMP;"
+   },
+   "expected": {
+    "ok": "&"
+   }
+  },
+  {
+   "id": "decode-023",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&nbsp;"
+   },
+   "expected": {
+    "ok": " "
+   }
+  },
+  {
+   "id": "decode-024",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&#99999999999999;"
+   },
+   "expected": {
+    "ok": "�"
+   }
+  },
+  {
+   "id": "decode-025",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&CounterClockwiseContourIntegral;"
+   },
+   "expected": {
+    "ok": "∳"
+   }
+  },
+  {
+   "id": "decode-026",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": ""
+   },
+   "expected": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "decode-027",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "no refs"
+   },
+   "expected": {
+    "ok": "no refs"
+   }
+  },
+  {
+   "id": "decode-028",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&lt"
+   },
+   "expected": {
+    "ok": "<"
+   }
+  },
+  {
+   "id": "decode-029",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&LT"
+   },
+   "expected": {
+    "ok": "<"
+   }
+  },
+  {
+   "id": "decode-030",
+   "kind": "decode",
+   "note": "",
+   "input": {
+    "text": "&ltx"
+   },
+   "expected": {
+    "ok": "<x"
+   }
+  },
+  {
+   "id": "escapeText-001",
+   "kind": "escapeText",
+   "note": "",
+   "input": {
+    "text": "a<b>&c"
+   },
+   "expected": {
+    "ok": "a&lt;b&gt;&amp;c"
+   }
+  },
+  {
+   "id": "escapeText-002",
+   "kind": "escapeText",
+   "note": "",
+   "input": {
+    "text": " "
+   },
+   "expected": {
+    "ok": "&nbsp;"
+   }
+  },
+  {
+   "id": "escapeText-003",
+   "kind": "escapeText",
+   "note": "",
+   "input": {
+    "text": "\"q\""
+   },
+   "expected": {
+    "ok": "\"q\""
+   }
+  },
+  {
+   "id": "escapeAttr-001",
+   "kind": "escapeAttr",
+   "note": "",
+   "input": {
+    "text": "a\"b"
+   },
+   "expected": {
+    "ok": "a&quot;b"
+   }
+  },
+  {
+   "id": "escapeAttr-002",
+   "kind": "escapeAttr",
+   "note": "",
+   "input": {
+    "text": "<&>"
+   },
+   "expected": {
+    "ok": "&lt;&amp;&gt;"
+   }
+  },
+  {
+   "id": "escapeAttr-003",
+   "kind": "escapeAttr",
+   "note": "",
+   "input": {
+    "text": " '"
+   },
+   "expected": {
+    "ok": "&nbsp;'"
+   }
+  },
+  {
+   "id": "tokenize-001",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<p class=a>Hi</p>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "p",
+      [
+       [
+        "class",
+        "a"
+       ]
+      ],
+      false
+     ],
+     [
+      "Character",
+      "Hi"
+     ],
+     [
+      "EndTag",
+      "p"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-002",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<A HREF='x' title=\"t\" checked>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "a",
+      [
+       [
+        "href",
+        "x"
+       ],
+       [
+        "title",
+        "t"
+       ],
+       [
+        "checked",
+        ""
+       ]
+      ],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-003",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<br/>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "br",
+      [],
+      true
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-004",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<img src=a src=b>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "img",
+      [
+       [
+        "src",
+        "a"
+       ]
+      ],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-005",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<!-- c -->"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Comment",
+      " c "
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-006",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<!DOCTYPE html>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "DOCTYPE",
+      "html",
+      null,
+      null,
+      true
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-007",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<script>if (a<b) {}</script>x"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "script",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "if (a<b) {}"
+     ],
+     [
+      "EndTag",
+      "script"
+     ],
+     [
+      "Character",
+      "x"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-008",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<title><b>&amp;</b></title>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "title",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "<b>&</b>"
+     ],
+     [
+      "EndTag",
+      "title"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-009",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<style></STYLE >"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "style",
+      [],
+      false
+     ],
+     [
+      "EndTag",
+      "style"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-010",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<textarea></textarea>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "textarea",
+      [],
+      false
+     ],
+     [
+      "EndTag",
+      "textarea"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-011",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<xmp><b></xmp>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "xmp",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "<b>"
+     ],
+     [
+      "EndTag",
+      "xmp"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-012",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<plaintext></plaintext>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "plaintext",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "</plaintext>"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-013",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<noscript><b></noscript>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "noscript",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "<b>"
+     ],
+     [
+      "EndTag",
+      "noscript"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-014",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<script><!--<script></script>--></script>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "script",
+      [],
+      false
+     ],
+     [
+      "Character",
+      "<!--<script></script>-->"
+     ],
+     [
+      "EndTag",
+      "script"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-015",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "a < b"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Character",
+      "a < b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-016",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "</>"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "tokenize-017",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "</ p>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Comment",
+      " p"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-018",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<?php x ?>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Comment",
+      "?php x ?"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-019",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<a href=\"&amp;x&ampy\">"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "a",
+      [
+       [
+        "href",
+        "&x&ampy"
+       ]
+      ],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-020",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<a b='&notin'>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "a",
+      [
+       [
+        "b",
+        "&notin"
+       ]
+      ],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-021",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<p\u0000>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "p�",
+      [],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-022",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "a\r\nb\rc"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Character",
+      "a\nb\nc"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-023",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<![CDATA[x]]>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Comment",
+      "[CDATA[x]]"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-024",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<div a=1/>"
+   },
+   "expected": {
+    "ok": [
+     [
+      "StartTag",
+      "div",
+      [
+       [
+        "a",
+        "1/"
+       ]
+      ],
+      false
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tokenize-025",
+   "kind": "tokenize",
+   "note": "",
+   "input": {
+    "html": "<!---->"
+   },
+   "expected": {
+    "ok": [
+     [
+      "Comment",
+      ""
+     ]
+    ]
+   }
+  },
+  {
+   "id": "parse-001",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<p>a<p>b"
+   },
+   "expected": {
+    "ok": "<p>a</p><p>b</p>"
+   }
+  },
+  {
+   "id": "parse-002",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<ul><li>a<li>b</ul>"
+   },
+   "expected": {
+    "ok": "<ul><li>a</li><li>b</li></ul>"
+   }
+  },
+  {
+   "id": "parse-003",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<dl><dt>a<dd>b<dt>c</dl>"
+   },
+   "expected": {
+    "ok": "<dl><dt>a</dt><dd>b</dd><dt>c</dt></dl>"
+   }
+  },
+  {
+   "id": "parse-004",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<p>a<div>b</div>"
+   },
+   "expected": {
+    "ok": "<p>a</p><div>b</div>"
+   }
+  },
+  {
+   "id": "parse-005",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<h1>a<h2>b"
+   },
+   "expected": {
+    "ok": "<h1>a</h1><h2>b</h2>"
+   }
+  },
+  {
+   "id": "parse-006",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td>1<td>2<tr><td>3</table>"
+   },
+   "expected": {
+    "ok": "<table><tr><td>1</td><td>2</td></tr><tr><td>3</td></tr></table>"
+   }
+  },
+  {
+   "id": "parse-007",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<a href=x>1<a href=y>2</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"x\">1</a><a href=\"y\">2</a>"
+   }
+  },
+  {
+   "id": "parse-008",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<b>x</div>y</b>"
+   },
+   "expected": {
+    "ok": "<b>xy</b>"
+   }
+  },
+  {
+   "id": "parse-009",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<b><i>x</b>y</i>"
+   },
+   "expected": {
+    "ok": "<b><i>x</i></b>y"
+   }
+  },
+  {
+   "id": "parse-010",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "</p>x"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "parse-011",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<br></br>"
+   },
+   "expected": {
+    "ok": "<br><br>"
+   }
+  },
+  {
+   "id": "parse-012",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<pre>\nx\n</pre>"
+   },
+   "expected": {
+    "ok": "<pre>x\n</pre>"
+   }
+  },
+  {
+   "id": "parse-013",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<textarea>\n\nx</textarea>"
+   },
+   "expected": {
+    "ok": "<textarea>\nx</textarea>"
+   }
+  },
+  {
+   "id": "parse-014",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<select><option>a<option>b</select>"
+   },
+   "expected": {
+    "ok": "<select><option>a</option><option>b</option></select>"
+   }
+  },
+  {
+   "id": "parse-015",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<img src=x><input><hr>"
+   },
+   "expected": {
+    "ok": "<img src=\"x\"><input><hr>"
+   }
+  },
+  {
+   "id": "parse-016",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<p>1 &lt; 2 &amp; 3&nbsp;4</p>"
+   },
+   "expected": {
+    "ok": "<p>1 &lt; 2 &amp; 3&nbsp;4</p>"
+   }
+  },
+  {
+   "id": "parse-017",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<script>a<b</script>"
+   },
+   "expected": {
+    "ok": "<script>a<b</script>"
+   }
+  },
+  {
+   "id": "parse-018",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<div title='a\"<>&'>x</div>"
+   },
+   "expected": {
+    "ok": "<div title=\"a&quot;&lt;&gt;&amp;\">x</div>"
+   }
+  },
+  {
+   "id": "parse-019",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<!DOCTYPE html><html><head><title>T</title></head><body>x</body></html>"
+   },
+   "expected": {
+    "ok": "<html><head><title>T</title></head><body>x</body></html>"
+   }
+  },
+  {
+   "id": "parse-020",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<!-- keep -->"
+   },
+   "expected": {
+    "ok": "<!-- keep -->"
+   }
+  },
+  {
+   "id": "parse-021",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<span>a<span>b"
+   },
+   "expected": {
+    "ok": "<span>a<span>b</span></span>"
+   }
+  },
+  {
+   "id": "parse-022",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<ul><li><ul><li>x</ul><li>y</ul>"
+   },
+   "expected": {
+    "ok": "<ul><li><ul><li>x</li></ul></li><li>y</li></ul>"
+   }
+  },
+  {
+   "id": "parse-023",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<div><p>a</span>b</div>"
+   },
+   "expected": {
+    "ok": "<div><p>ab</p></div>"
+   }
+  },
+  {
+   "id": "parse-024",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<p><button><p>x</button>y"
+   },
+   "expected": {
+    "ok": "<p><button><p>x</p></button>y</p>"
+   }
+  },
+  {
+   "id": "parse-025",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "x<p>"
+   },
+   "expected": {
+    "ok": "x<p></p>"
+   }
+  },
+  {
+   "id": "parse-026",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": ""
+   },
+   "expected": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "parse-027",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "plain"
+   },
+   "expected": {
+    "ok": "plain"
+   }
+  },
+  {
+   "id": "parse-028",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<table><tbody><tr><td>a</table>"
+   },
+   "expected": {
+    "ok": "<table><tbody><tr><td>a</td></tr></tbody></table>"
+   }
+  },
+  {
+   "id": "parse-029",
+   "kind": "parse",
+   "note": "",
+   "input": {
+    "html": "<option>a<optgroup>b"
+   },
+   "expected": {
+    "ok": "<option>a</option><optgroup>b</optgroup>"
+   }
+  },
+  {
+   "id": "parse-030",
+   "kind": "parse",
+   "note": "depth capped at 256",
+   "input": {
+    "html": "<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>x</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>"
+   },
+   "expected": {
+    "ok": "<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>x</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>"
+   }
+  },
+  {
+   "id": "textContent-001",
+   "kind": "textContent",
+   "note": "",
+   "input": {
+    "html": "<p>Hello <b>world</b></p><script>x()</script><style>a{}</style>"
+   },
+   "expected": {
+    "ok": "Hello world"
+   }
+  },
+  {
+   "id": "textContent-002",
+   "kind": "textContent",
+   "note": "",
+   "input": {
+    "html": "<title>T</title>a<noscript>n</noscript><template>t</template>"
+   },
+   "expected": {
+    "ok": "a"
+   }
+  },
+  {
+   "id": "textContent-003",
+   "kind": "textContent",
+   "note": "",
+   "input": {
+    "html": "a<!-- c -->b"
+   },
+   "expected": {
+    "ok": "ab"
+   }
+  },
+  {
+   "id": "textContent-004",
+   "kind": "textContent",
+   "note": "",
+   "input": {
+    "html": "&lt;tag&gt;"
+   },
+   "expected": {
+    "ok": "<tag>"
+   }
+  },
+  {
+   "id": "extractText-001",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<h1>Title</h1><p>One  two\nthree</p><ul><li>a</li><li>b</li></ul>"
+   },
+   "expected": {
+    "ok": "# Title\n\nOne two three\n\n- a\n- b"
+   }
+  },
+  {
+   "id": "extractText-002",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<table><tr><th>A</th><th>B</th></tr><tr><td>1</td><td>2</td></tr></table>"
+   },
+   "expected": {
+    "ok": "A\tB\n1\t2"
+   }
+  },
+  {
+   "id": "extractText-003",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "a<br>b"
+   },
+   "expected": {
+    "ok": "a\nb"
+   }
+  },
+  {
+   "id": "extractText-004",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<p>a</p><hr><p>b</p>"
+   },
+   "expected": {
+    "ok": "a\n\n---\n\nb"
+   }
+  },
+  {
+   "id": "extractText-005",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<pre>  x\n    y</pre>"
+   },
+   "expected": {
+    "ok": "  x\n    y"
+   }
+  },
+  {
+   "id": "extractText-006",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<div><div><p>deep</p></div></div>"
+   },
+   "expected": {
+    "ok": "deep"
+   }
+  },
+  {
+   "id": "extractText-007",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<h3>x</h3>"
+   },
+   "expected": {
+    "ok": "### x"
+   }
+  },
+  {
+   "id": "extractText-008",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<dl><dt>t</dt><dd>d</dd></dl>"
+   },
+   "expected": {
+    "ok": "t\nd"
+   }
+  },
+  {
+   "id": "extractText-009",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "  lead  <span> mid </span> trail  "
+   },
+   "expected": {
+    "ok": "lead mid trail"
+   }
+  },
+  {
+   "id": "extractText-010",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<p></p><p></p>"
+   },
+   "expected": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "extractText-011",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<script>x</script>"
+   },
+   "expected": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "extractText-012",
+   "kind": "extractText",
+   "note": "",
+   "input": {
+    "html": "<ol><li>one<li>two</ol>"
+   },
+   "expected": {
+    "ok": "- one\n- two"
+   }
+  },
+  {
+   "id": "sanitize-001",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<p onclick='x()'>Hi</p>"
+   },
+   "expected": {
+    "ok": "<p>Hi</p>"
+   }
+  },
+  {
+   "id": "sanitize-002",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<script>alert(1)</script>ok"
+   },
+   "expected": {
+    "ok": "ok"
+   }
+  },
+  {
+   "id": "sanitize-003",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='javascript:alert(1)'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-004",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href=' JaVaScRiPt:alert(1)'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-005",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='java\tscript:alert(1)'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-006",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='jav&#x09;ascript:alert(1)'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-007",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='&#106;avascript:alert(1)'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-008",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='vbscript:x'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-009",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='data:text/html,<script>1</script>'>x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-010",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='https://e.com/?q=1#f'>x</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"https://e.com/?q=1#f\">x</a>"
+   }
+  },
+  {
+   "id": "sanitize-011",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='/rel'>x</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"/rel\">x</a>"
+   }
+  },
+  {
+   "id": "sanitize-012",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='page?x=a:b'>x</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"page?x=a:b\">x</a>"
+   }
+  },
+  {
+   "id": "sanitize-013",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href='mailto:a@b.co'>x</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"mailto:a@b.co\">x</a>"
+   }
+  },
+  {
+   "id": "sanitize-014",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<img src=x onerror=alert(1)>"
+   },
+   "expected": {
+    "ok": "<img src=\"x\">"
+   }
+  },
+  {
+   "id": "sanitize-015",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<img src='javascript:x'>"
+   },
+   "expected": {
+    "ok": "<img>"
+   }
+  },
+  {
+   "id": "sanitize-016",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<iframe src=x>inner</iframe>after"
+   },
+   "expected": {
+    "ok": "after"
+   }
+  },
+  {
+   "id": "sanitize-017",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<svg><script>1</script></svg>t"
+   },
+   "expected": {
+    "ok": "t"
+   }
+  },
+  {
+   "id": "sanitize-018",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<math><mi>x</mi></math>t"
+   },
+   "expected": {
+    "ok": "t"
+   }
+  },
+  {
+   "id": "sanitize-019",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<style>*{}</style><p style='color:red'>c</p>"
+   },
+   "expected": {
+    "ok": "<p>c</p>"
+   }
+  },
+  {
+   "id": "sanitize-020",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<custom-el>keep text</custom-el>"
+   },
+   "expected": {
+    "ok": "keep text"
+   }
+  },
+  {
+   "id": "sanitize-021",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<section><article>x</article></section>"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "sanitize-022",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<p title='a&quot;b' class=c id=d>t</p>"
+   },
+   "expected": {
+    "ok": "<p title=\"a&quot;b\">t</p>"
+   }
+  },
+  {
+   "id": "sanitize-023",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<!-- secret -->x"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "sanitize-024",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<noscript><p title=\"</noscript><img src=x onerror=alert(1)>\"></noscript>"
+   },
+   "expected": {
+    "ok": "<img src=\"x\">\"&gt;"
+   }
+  },
+  {
+   "id": "sanitize-025",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<textarea><script>1</script></textarea>x"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "sanitize-026",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<xmp><script>1</script></xmp>x"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "sanitize-027",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<plaintext><script>1</script>"
+   },
+   "expected": {
+    "ok": ""
+   }
+  },
+  {
+   "id": "sanitize-028",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<template><script>1</script></template>x"
+   },
+   "expected": {
+    "ok": "x"
+   }
+  },
+  {
+   "id": "sanitize-029",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<table><td colspan=2 onclick=x>a</table>"
+   },
+   "expected": {
+    "ok": "<table><td colspan=\"2\">a</td></table>"
+   }
+  },
+  {
+   "id": "sanitize-030",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<p>1 &lt; 2</p>"
+   },
+   "expected": {
+    "ok": "<p>1 &lt; 2</p>"
+   }
+  },
+  {
+   "id": "sanitize-031",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href=\"http://x\" title='<script>'>x</a>"
+   },
+   "expected": {
+    "ok": "<a href=\"http://x\" title=\"&lt;script&gt;\">x</a>"
+   }
+  },
+  {
+   "id": "sanitize-032",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<div lang=en dir=rtl>x</div>"
+   },
+   "expected": {
+    "ok": "<div lang=\"en\" dir=\"rtl\">x</div>"
+   }
+  },
+  {
+   "id": "sanitize-033",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<form><input value=x><button>b</button></form>t"
+   },
+   "expected": {
+    "ok": "t"
+   }
+  },
+  {
+   "id": "sanitize-034",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<base href=evil><link rel=stylesheet href=x><meta http-equiv=refresh>t"
+   },
+   "expected": {
+    "ok": "t"
+   }
+  },
+  {
+   "id": "sanitize-035",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<object data=x>o</object><embed src=x>t"
+   },
+   "expected": {
+    "ok": "t"
+   }
+  },
+  {
+   "id": "sanitize-036",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<a href=\"\u0001javascript:1\">x</a>"
+   },
+   "expected": {
+    "ok": "<a>x</a>"
+   }
+  },
+  {
+   "id": "sanitize-037",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<img src=\"https://e.com/a.png\" alt=\"A\" width=10>"
+   },
+   "expected": {
+    "ok": "<img src=\"https://e.com/a.png\" alt=\"A\" width=\"10\">"
+   }
+  },
+  {
+   "id": "sanitize-038",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<ul><li>a<li>b</ul>"
+   },
+   "expected": {
+    "ok": "<ul><li>a</li><li>b</li></ul>"
+   }
+  },
+  {
+   "id": "sanitize-039",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<q cite='javascript:1'>q</q>"
+   },
+   "expected": {
+    "ok": "<q>q</q>"
+   }
+  },
+  {
+   "id": "sanitize-040",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "<blockquote cite='https://x'>q</blockquote>"
+   },
+   "expected": {
+    "ok": "<blockquote cite=\"https://x\">q</blockquote>"
+   }
+  },
+  {
+   "id": "sanitize-041",
+   "kind": "sanitize",
+   "note": "",
+   "input": {
+    "html": "x<br>y"
+   },
+   "expected": {
+    "ok": "x<br>y"
+   }
+  },
+  {
+   "id": "sanitize-042",
+   "kind": "sanitize",
+   "note": "custom policy",
+   "input": {
+    "html": "<iframe src='https://x'>i</iframe><a href='ftp://x' class=c>f</a>",
+    "policy": {
+     "tags": [
+      "iframe"
+     ],
+     "attrs": [
+      [
+       "iframe",
+       "src"
+      ],
+      [
+       "*",
+       "class"
+      ]
+     ],
+     "schemes": [
+      "ftp"
+     ]
+    }
+   },
+   "expected": {
+    "ok": "<iframe src=\"https://x\"></iframe><a href=\"ftp://x\" class=\"c\">f</a>"
+   }
+  },
+  {
+   "id": "sanitize-043",
+   "kind": "sanitize",
+   "note": "kept raw text element is written without content (idempotent)",
+   "input": {
+    "html": "<iframe>a&amp;b<p>x</iframe>y",
+    "policy": {
+     "tags": [
+      "iframe"
+     ]
+    }
+   },
+   "expected": {
+    "ok": "<iframe></iframe>y"
+   }
+  },
+  {
+   "id": "sanitize-044",
+   "kind": "sanitize",
+   "note": "kept style keeps no content",
+   "input": {
+    "html": "<style>p>a{color:red}</style><p>t</p>",
+    "policy": {
+     "tags": [
+      "STYLE"
+     ]
+    }
+   },
+   "expected": {
+    "ok": "<style></style><p>t</p>"
+   }
+  },
+  {
+   "id": "sanitize-045",
+   "kind": "sanitize",
+   "note": "plaintext is never kept",
+   "input": {
+    "html": "<b>a</b><plaintext><i>b</i>",
+    "policy": {
+     "tags": [
+      "plaintext"
+     ]
+    }
+   },
+   "expected": {
+    "ok": "<b>a</b>"
+   }
+  },
+  {
+   "id": "sanitize-046",
+   "kind": "sanitize",
+   "note": "ftp not allowed by default",
+   "input": {
+    "html": "<a href='ftp://x'>f</a>"
+   },
+   "expected": {
+    "ok": "<a>f</a>"
+   }
+  },
+  {
+   "id": "safeUrl-001",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "https://x"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-002",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "HTTP://X"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-003",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "/a"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-004",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "a/b:c"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-005",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "?q=a:b"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-006",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "#f"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-007",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": ""
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-008",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "javascript:1"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-009",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": " java\nscript:1"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-010",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "data:x"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-011",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "blob:x"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-012",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "mailto:a"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-013",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "tel:1"
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "safeUrl-014",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "x:y"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-015",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "javascript:1"
+   },
+   "expected": {
+    "ok": false
+   }
+  },
+  {
+   "id": "safeUrl-016",
+   "kind": "safeUrl",
+   "note": "",
+   "input": {
+    "url": "ftp://x",
+    "schemes": [
+     "ftp"
+    ]
+   },
+   "expected": {
+    "ok": true
+   }
+  },
+  {
+   "id": "query-001",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "h1"
+   },
+   "expected": {
+    "ok": [
+     "<h1>T</h1>"
+    ]
+   }
+  },
+  {
+   "id": "query-002",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "p"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"lead\">one</p>",
+     "<p>two</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-003",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": ".lead"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"lead\">one</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-004",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "#main > h1"
+   },
+   "expected": {
+    "ok": [
+     "<h1>T</h1>"
+    ]
+   }
+  },
+  {
+   "id": "query-005",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "div p"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"lead\">one</p>",
+     "<p>two</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-006",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "h1 + p"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"lead\">one</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-007",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "h1 ~ p"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"lead\">one</p>",
+     "<p>two</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-008",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "[href$='.pdf']"
+   },
+   "expected": {
+    "ok": [
+     "<a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a>"
+    ]
+   }
+  },
+  {
+   "id": "query-009",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "a[href^=https]"
+   },
+   "expected": {
+    "ok": [
+     "<a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a>"
+    ]
+   }
+  },
+  {
+   "id": "query-010",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "a[href*='e.com']"
+   },
+   "expected": {
+    "ok": [
+     "<a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a>"
+    ]
+   }
+  },
+  {
+   "id": "query-011",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "[data-x~=b]"
+   },
+   "expected": {
+    "ok": [
+     "<a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a>"
+    ]
+   }
+  },
+  {
+   "id": "query-012",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "[lang|=en]"
+   },
+   "expected": {
+    "ok": [
+     "<a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a>"
+    ]
+   }
+  },
+  {
+   "id": "query-013",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "[data-x='a']"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "query-014",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "span:empty"
+   },
+   "expected": {
+    "ok": [
+     "<span></span>"
+    ]
+   }
+  },
+  {
+   "id": "query-015",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:first-child"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-016",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:last-child"
+   },
+   "expected": {
+    "ok": [
+     "<li>4</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-017",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:nth-child(2n+1)"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>",
+     "<li>3</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-018",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:nth-child(even)"
+   },
+   "expected": {
+    "ok": [
+     "<li>2</li>",
+     "<li>4</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-019",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:nth-child(-n+2)"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>",
+     "<li>2</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-020",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:nth-last-child(1)"
+   },
+   "expected": {
+    "ok": [
+     "<li>4</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-021",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:not(:first-child):not(:last-child)"
+   },
+   "expected": {
+    "ok": [
+     "<li>2</li>",
+     "<li>3</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-022",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "h1, li:nth-child(3)"
+   },
+   "expected": {
+    "ok": [
+     "<h1>T</h1>",
+     "<li>3</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-023",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": ".box.wide > span"
+   },
+   "expected": {
+    "ok": [
+     "<span></span>"
+    ]
+   }
+  },
+  {
+   "id": "query-024",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "DIV > H1"
+   },
+   "expected": {
+    "ok": [
+     "<h1>T</h1>"
+    ]
+   }
+  },
+  {
+   "id": "query-025",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "ul > *"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>",
+     "<li>2</li>",
+     "<li>3</li>",
+     "<li>4</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-026",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "p:only-child"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "query-027",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "table"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "query-028",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": ""
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-029",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "p >"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-030",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "p,"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-031",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "[href"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-032",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": ":hover"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-033",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "p!"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-034",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "li:nth-child(x)"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-035",
+   "kind": "query",
+   "note": "",
+   "input": {
+    "html": "<div id=\"main\" class=\"box wide\"><h1>T</h1><p class=\"lead\">one</p><p>two</p><a href=\"https://e.com/a.pdf\" data-x=\"a b\" lang=\"en-US\">l</a><span></span></div><ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+    "selector": "a[href=]"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-036",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": ".a"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"a b\">y</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-037",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "[class~=b]"
+   },
+   "expected": {
+    "ok": [
+     "<p class=\"a b\">y</p>"
+    ]
+   }
+  },
+  {
+   "id": "query-038",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "li:nth-child( 2 )"
+   },
+   "expected": {
+    "ok": [
+     "<li>2</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-039",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "li:nth-child(+n - 1)"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>",
+     "<li>2</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-040",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "li:nth-child(999999999)"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "query-041",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "li:nth-child(1234567890)"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-042",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "li:nth-child(١)"
+   },
+   "expected": {
+    "error": "BAD_SELECTOR"
+   }
+  },
+  {
+   "id": "query-043",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "LI:FIRST-CHILD"
+   },
+   "expected": {
+    "ok": [
+     "<li>1</li>"
+    ]
+   }
+  },
+  {
+   "id": "query-044",
+   "kind": "query",
+   "note": "ASCII-only case folding, whitespace and digits",
+   "input": {
+    "html": "<p class=\"a b\">x</p><p class=\"a b\">y</p><ul><li>1</li><li>2</li></ul>",
+    "selector": "İ"
+   },
+   "expected": {
+    "ok": []
+   }
+  },
+  {
+   "id": "meta-001",
+   "kind": "meta",
+   "note": "",
+   "input": {
+    "html": "<html lang=\"id\"><head><title>  Laporan\n Kuartal </title><meta name=\"Description\" content=\"Ringkasan\"><meta property=\"og:title\" content=\"Q3\"><meta property=\"OG:image\" content=\"/i.png\"><link rel=\"alternate canonical\" href=\"https://e.com/q3\"></head></html>"
+   },
+   "expected": {
+    "ok": {
+     "title": "Laporan Kuartal",
+     "description": "Ringkasan",
+     "canonical": "https://e.com/q3",
+     "lang": "id",
+     "og": [
+      [
+       "title",
+       "Q3"
+      ],
+      [
+       "image",
+       "/i.png"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "id": "meta-002",
+   "kind": "meta",
+   "note": "",
+   "input": {
+    "html": "<p>no head</p>"
+   },
+   "expected": {
+    "ok": {
+     "title": null,
+     "description": null,
+     "canonical": null,
+     "lang": null,
+     "og": []
+    }
+   }
+  },
+  {
+   "id": "meta-003",
+   "kind": "meta",
+   "note": "",
+   "input": {
+    "html": "<title></title><title>Second</title><meta name=description><meta name=description content=x>"
+   },
+   "expected": {
+    "ok": {
+     "title": null,
+     "description": "x",
+     "canonical": null,
+     "lang": null,
+     "og": []
+    }
+   }
+  },
+  {
+   "id": "meta-004",
+   "kind": "meta",
+   "note": "",
+   "input": {
+    "html": "<title>a &amp; b</title>"
+   },
+   "expected": {
+    "ok": {
+     "title": "a & b",
+     "description": null,
+     "canonical": null,
+     "lang": null,
+     "og": []
+    }
+   }
+  },
+  {
+   "id": "tables-001",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><th>A<th>B<tr><td>1<td>2</table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "A",
+       "B"
+      ],
+      [
+       "1",
+       "2"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-002",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td rowspan=2>A<td>B<tr><td>C</table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "A",
+       "B"
+      ],
+      [
+       "A",
+       "C"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-003",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td colspan=2>A<td>B</table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "A",
+       "A",
+       "B"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-004",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td>a<table><tr><td>inner</table></td></tr></table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "ainner"
+      ]
+     ],
+     [
+      [
+       "inner"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-005",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td colspan=0>a<td rowspan=x>b</table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "a",
+       "b"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-006",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td colspan=5000>a</table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a",
+       "a"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-007",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td rowspan=3>A<td>B<tr><td>C<tr></table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "A",
+       "B"
+      ],
+      [
+       "A",
+       "C"
+      ],
+      [
+       "A"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-008",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td>a</td></tr><tr></tr></table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "a"
+      ],
+      []
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-009",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><caption>c</caption><thead><tr><th> H </th></tr></thead><tbody><tr><td>x<br>y</td></tr></tbody></table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "H"
+      ],
+      [
+       "xy"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-010",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<table><tr><td> +3 </td><td colspan=' 2'>z</td></tr></table>"
+   },
+   "expected": {
+    "ok": [
+     [
+      [
+       "+3",
+       "z",
+       "z"
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "id": "tables-011",
+   "kind": "tables",
+   "note": "",
+   "input": {
+    "html": "<p>none</p>"
+   },
+   "expected": {
+    "ok": []
+   }
+  }
+ ]
+}

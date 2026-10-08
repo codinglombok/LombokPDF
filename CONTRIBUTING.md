@@ -89,7 +89,7 @@ export async function merge(docs: Document[], options: MergeOptions = {}): Promi
   // ...
 }
 
-// ❌ Bad
+// Salah: Bad
 export async function merge(docs: any[], options?: any) {
   // ...
 }
@@ -108,13 +108,13 @@ export async function merge(docs: any[], options?: any) {
 All skill modules **must** use dynamic imports internally. This keeps the core bundle small.
 
 ```typescript
-// ✅ Correct — lazy loaded
+// Benar: Correct — lazy loaded
 export async function merge(docs: Document[]): Promise<Document> {
   const { PDFMerger } = await import('./pdf-merger.js')  // loaded on first call
   return PDFMerger.merge(docs)
 }
 
-// ❌ Wrong — static import means it's always in the bundle
+// Salah: Wrong — static import means it's always in the bundle
 import { PDFMerger } from './pdf-merger.js'
 export async function merge(docs: Document[]): Promise<Document> { ... }
 ```
@@ -124,10 +124,10 @@ export async function merge(docs: Document[]): Promise<Document> { ... }
 User data must always go through Handlebars compilation, never string concatenation.
 
 ```typescript
-// ✅ Safe
+// Benar: Safe
 Handlebars.compile(templateSource)(userData)
 
-// ❌ Unsafe
+// Salah: Unsafe
 `<h1>${userData.title}</h1>`
 ```
 
@@ -215,7 +215,7 @@ export interface MySkillOptions {
  * ```
  */
 export async function mySkill(doc: Document, options: MySkillOptions = {}): Promise<Document> {
-  // ✅ Lazy-load heavy dependencies
+  // Benar: Lazy-load heavy dependencies
   const { HeavyLibrary } = await import('./heavy-lib.js')
 
   const bytes = doc._getRaw()

@@ -6,7 +6,7 @@
  */
 
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs'
-import { resolve, relative } from 'node:path'
+import { resolve, relative, sep } from 'node:path'
 
 const RED   = '\x1b[31m'
 const GREEN = '\x1b[32m'
@@ -52,6 +52,9 @@ const SECRET_PATTERNS = [
   { name: 'MongoDB URL with pass', regex: /mongodb(?:\+srv)?:\/\/[^:]+:[^@]{6,}@/gi },
   { name: 'Redis URL with pass',   regex: /redis:\/\/[^:]+:[^@]{6,}@/gi },
 ]
+
+// Files whose content is fixed by hash in src/vendor/MANIFEST.json
+const HASH_LOCKED = ['src/vendor/MANIFEST.json', 'tests/vendor/vectors/']
 
 // Files/dirs to skip
 const SKIP_DIRS = new Set([
@@ -101,6 +104,9 @@ for (const file of files) {
   if (file.includes('fixtures') || file.includes('__mocks__')) continue
 
   const relPath = relative(ROOT, file)
+  // Hash-locked copies from Lombok libraries (SHA-256 digests, base64 test documents);
+  // their content is verified by scripts/check-vendor.mjs against the origin repos.
+  if (HASH_LOCKED.some(prefix => relPath.split(sep).join('/').startsWith(prefix))) continue
   scanned++
 
   for (const { name, regex } of SECRET_PATTERNS) {
@@ -115,6 +121,8 @@ for (const file of files) {
       if (/process\.env\.|import\.meta\.env\.|getenv\(|os\.environ/.test(content.slice(
         Math.max(0, content.indexOf(m) - 50), content.indexOf(m)
       ))) return false
+      // Skip the base64 alphabet itself (encoder tables)
+      if (m.includes('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')) return false
       // Skip example/placeholder strings
       if (/your[-_]?|example[-_]?|placeholder|<[^>]+>|xxx|test[-_]?secret/i.test(m)) return false
       // Skip URLs in comments

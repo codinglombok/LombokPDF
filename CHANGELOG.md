@@ -9,7 +9,38 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-*(Next version changes go here)*
+Fase F1 dari `docs/map_LombokPDF_v1.0.0.md`: 10 dependensi runtime pihak ketiga diganti
+dengan library Lombok Ecosystem.
+
+### Changed
+
+- HTML parsing: `parse5` diganti LombokHTML 0.2.0 (tokenizer WHATWG, lulus html5lib-tests).
+  Isi `<head>`, `<style>`, `<script>`, `<title>`, `<template>` tidak lagi tercetak sebagai teks di PDF.
+- Markdown: `marked` dan `marked-gfm-heading-id` diganti LombokMarkDown 2.0.0 (CommonMark 0.31.2 + GFM).
+  Tautan `javascript:`, `vbscript:`, `file:` dan `data:` non-gambar kini selalu dibuang.
+  `markdownToHTML(md, { html: false })` menampilkan HTML mentah sebagai teks untuk masukan tak tepercaya.
+- DOCX: `mammoth` diganti LombokDocx 1.1.0 (tanpa modul native, ZIP/XML berbatas).
+  Galat berkas rusak kini berbentuk `LombokPDF/importDocx: <KODE>: ...` (`INVALID_ZIP`, `LIMIT_EXCEEDED`, ...).
+- Front matter templat: `gray-matter` (dan `yaml`) diganti parser YAML 1.2 subset aman
+  (`src/templates/front-matter.ts`). Perbedaan yang disengaja: nilai seperti `10:30` kini string,
+  bukan angka seksagesimal YAML 1.1; anchor, alias, dan tag ditolak dengan galat bernomor baris.
+- QR code: `qrcode` diganti `lombokqrcode` 0.2.1. Simbol digambar langsung sebagai persegi vektor
+  (tanpa rasterisasi SVG ke PNG lewat `sharp`); opsi `renderer` kini diabaikan (deprecated).
+- CLI: `commander`, `chalk`, `ora` diganti LombokCLIParse 0.2.0 dan helper terminal kecil
+  (`src/cli/term.ts`, menghormati `NO_COLOR`/`FORCE_COLOR`). Kode keluar: 0 sukses/help/versi,
+  1 perintah gagal, 2 baris perintah tidak valid. `--pass` untuk `sign` membaca `CERT_PASS`.
+
+### Added
+
+- `src/vendor/`: salinan LombokHTML, LombokMarkDown, LombokDocx, LombokCLIParse dengan kepala
+  asal-usul dan `src/vendor/MANIFEST.json` (SHA-256 isi asal); `npm run audit:vendor` memeriksanya.
+- `tests/vendor/vendor-vectors.test.ts`: 639 kasus vector milik library asal dijalankan terhadap salinan.
+- `tests/unit/f1-replacements.test.ts`: tes front matter/YAML, impor Markdown/DOCX, CSSOM, QR, CLI.
+
+### Removed
+
+- Dependensi runtime: `parse5`, `marked`, `marked-gfm-heading-id`, `gray-matter`, `yaml`, `mammoth`,
+  `commander`, `chalk`, `ora`, `qrcode`; dev: `@types/qrcode`.
 
 ---
 

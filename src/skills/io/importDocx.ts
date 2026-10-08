@@ -1,11 +1,12 @@
 /**
  * LombokPDF — DOCX Import Skill
- * Converts .docx files to HTML for the LLE renderer.
- * Preserves: headings, paragraphs, tables, bold/italic, lists, images (base64).
- *
- * Requires: mammoth (auto-installed as optional dependency)
- *   npm install mammoth
+ * Converts .docx files to HTML for the LLE renderer, using LombokDocx
+ * (vendored in src/vendor/lombokdocx): no native modules, bounded ZIP/XML reading.
+ * Preserves: headings, paragraphs, tables (merged cells), bold/italic/underline,
+ * lists, links, images (base64 data URIs).
  */
+
+import { readDocx, renderHTML, DocxError } from '../../vendor/lombokdocx/index.js'
 
 /**
  * Convert a DOCX file to HTML string.
@@ -21,75 +22,23 @@
  * const pdf  = await new LombokPDF().from({ html }).export('pdf')
  * ```
  */
-export async function docxToHTML(docx: string | Uint8Array | Buffer): Promise<string> {
-  // Mammoth is the gold standard for .docx → HTML
-  let mammoth: typeof import('mammoth')
-  try {
-    mammoth = await import('mammoth')
-  } catch {
-    throw new Error(
-      'LombokPDF/importDocx: mammoth is required. Install: npm install mammoth'
-    )
-  }
-
-  let result
-
+export async function docxToHTML(docx: string | Uint8Array): Promise<string> {
+  let bytes: Uint8Array
   if (typeof docx === 'string') {
-    // File path
-    result = await mammoth.convertToHtml(
-      { path: docx },
-      _mammothOptions()
-    )
+    const { readFile } = await import('node:fs/promises')
+    bytes = new Uint8Array(await readFile(docx))
   } else {
-    // Raw bytes
-    const buffer = docx instanceof Buffer ? docx : Buffer.from(docx)
-    result = await mammoth.convertToHtml(
-      { buffer },
-      _mammothOptions()
-    )
+    bytes = docx
   }
 
-  if (result.messages.length > 0) {
-    const warnings = result.messages
-      .filter(m => m.type === 'warning')
-      .map(m => m.message)
-    if (warnings.length > 0) {
-      console.warn('[LombokPDF/importDocx] Conversion warnings:', warnings.join('; '))
+  try {
+    const doc = readDocx(bytes)
+    return _wrapInDocument(renderHTML(doc, { includeTitle: false, embedImages: true }))
+  } catch (err: unknown) {
+    if (err instanceof DocxError) {
+      throw new Error(`LombokPDF/importDocx: ${err.code}: ${err.message}`, { cause: err })
     }
-  }
-
-  return _wrapInDocument(result.value)
-}
-
-function _mammothOptions(): Record<string, any> {
-  return {
-    styleMap: [
-      // Map Word styles to semantic HTML
-      "p[style-name='Heading 1'] => h1:fresh",
-      "p[style-name='Heading 2'] => h2:fresh",
-      "p[style-name='Heading 3'] => h3:fresh",
-      "p[style-name='Heading 4'] => h4:fresh",
-      "p[style-name='Heading 5'] => h5:fresh",
-      "p[style-name='Heading 6'] => h6:fresh",
-      "p[style-name='Title']     => h1.title:fresh",
-      "p[style-name='Subtitle']  => p.subtitle:fresh",
-      "p[style-name='Quote']     => blockquote:fresh",
-      "r[style-name='Strong']    => strong",
-      "r[style-name='Emphasis']  => em",
-      "r[style-name='Code']      => code",
-    ],
-    convertImage: mammothImageConverter(),
-  }
-}
-
-function mammothImageConverter() {
-  return {
-    convert: async (image: any): Promise<{ src: string }> => {
-      const buf    = await image.read()
-      const base64 = buf.toString('base64')
-      const mime   = image.contentType ?? 'image/png'
-      return { src: `data:${mime};base64,${base64}` }
-    },
+    throw err
   }
 }
 

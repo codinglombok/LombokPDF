@@ -5,7 +5,7 @@
  */
 
 import PDFDocument from 'pdfkit'
-import { parse } from 'parse5'
+import { parse, type HtmlNode } from '../../vendor/lombokhtml/index.js'
 import type { RenderOptions } from './engine.js'
 import type { LombokPDFOptions } from '../../types.js'
 import { BiDiResolver } from '../bidi/resolver.js'
@@ -68,17 +68,20 @@ export async function renderWithPDFKit(
   return new Uint8Array(Buffer.concat(chunks))
 }
 
+// Elements whose content is never painted (metadata, scripts, embedded CSS)
+const NON_RENDERED = new Set(['head', 'title', 'style', 'script', 'noscript', 'template', 'meta', 'link'])
+
 async function renderNode(
-  node: any,
+  node: HtmlNode,
   doc: PDFKit.PDFDocument,
   cssom: any,
   bidi: BiDiResolver,
   locale: any,
 ): Promise<void> {
-  if (!node) return
+  if (node.kind === 'comment') return
 
-  if (node.nodeName === '#text') {
-    const text = bidi.resolve(node.value ?? '')
+  if (node.kind === 'text') {
+    const text = bidi.resolve(node.data)
     if (text.trim()) {
       doc.text(text, { lineGap: 2 })
     }
@@ -87,7 +90,8 @@ async function renderNode(
 
   // Handle element nodes
   const el  = node
-  const tag = (el.tagName ?? '').toLowerCase()
+  const tag = el.kind === 'element' ? el.name : ''
+  if (NON_RENDERED.has(tag)) return
 
   switch (tag) {
     case 'h1': {
@@ -136,7 +140,7 @@ async function renderNode(
       return
     }
     case 'img': {
-      const src = el.attrs?.find((a: any) => a.name === 'src')?.value
+      const src = el.attr('src')
       if (src && src.startsWith('data:')) {
         const base64 = src.split(',')[1]!
         const buf = Buffer.from(base64, 'base64')
@@ -154,7 +158,7 @@ async function renderNode(
   }
 
   // Recurse into children
-  for (const child of el.childNodes ?? []) {
+  for (const child of el.children) {
     await renderNode(child, doc, cssom, bidi, locale)
   }
 
@@ -164,7 +168,7 @@ async function renderNode(
   }
 }
 
-async function renderTable(table: any, doc: PDFKit.PDFDocument, bidi: BiDiResolver): Promise<void> {
+async function renderTable(table: HtmlNode, doc: PDFKit.PDFDocument, bidi: BiDiResolver): Promise<void> {
   const rows: string[][] = []
   const allTrs = findAll(table, 'tr')
 
@@ -192,11 +196,11 @@ async function renderTable(table: any, doc: PDFKit.PDFDocument, bidi: BiDiResolv
       doc.rect(x, y, colWidth, rowHeight).stroke()
 
       const resolved = bidi.resolve(cell)
+      doc.font(r === 0 ? 'Helvetica-Bold' : 'Helvetica')
       doc.text(resolved, x + 4, y + 4, {
         width:  colWidth - 8,
         height: rowHeight - 8,
         ellipsis: true,
-        font: r === 0 ? 'Helvetica-Bold' : 'Helvetica',
       })
     }
 
@@ -207,7 +211,7 @@ async function renderTable(table: any, doc: PDFKit.PDFDocument, bidi: BiDiResolv
 }
 
 async function renderList(
-  el: any,
+  el: HtmlNode,
   doc: PDFKit.PDFDocument,
   ordered: boolean,
   bidi: BiDiResolver,
@@ -225,18 +229,15 @@ async function renderList(
   doc.moveDown(0.2)
 }
 
-function findAll(node: any, tag: string): any[] {
-  const result: any[] = []
-  if (!node) return result
-  if ((node.tagName ?? '').toLowerCase() === tag) result.push(node)
-  for (const child of node.childNodes ?? []) {
+function findAll(node: HtmlNode, tag: string): HtmlNode[] {
+  const result: HtmlNode[] = []
+  if (node.is(tag)) result.push(node)
+  for (const child of node.children) {
     result.push(...findAll(child, tag))
   }
   return result
 }
 
-function extractText(node: any): string {
-  if (!node) return ''
-  if (node.nodeName === '#text') return node.value ?? ''
-  return (node.childNodes ?? []).map(extractText).join('')
+function extractText(node: HtmlNode): string {
+  return node.textContent()
 }

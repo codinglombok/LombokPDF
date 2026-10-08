@@ -1,0 +1,134 @@
+{
+  "lombokcliparse": {
+    "library": "LombokCLIParse",
+    "version": "0.2.0",
+    "commit": "86110d2",
+    "files": {
+      "index.ts": {
+        "source": "typescript/src/index.ts",
+        "sha256": "0bf662f74b2c99eb46590b8c025922e5bd7428c86768b54c1eb993ed31e3e4e2"
+      }
+    },
+    "vectors": {
+      "file": "lombokcliparse-vectors-v1.json",
+      "sha256": "2243ea8bb26914066b8e47e6185d8d34458594083fb13911a02c0879825fd504"
+    }
+  },
+  "lombokdocx": {
+    "library": "LombokDocx",
+    "version": "1.1.0",
+    "commit": "16e37bd",
+    "files": {
+      "docx.ts": {
+        "source": "src/docx.ts",
+        "sha256": "26ccb9ae967fe58caf90e8613468580f6f14d5e11cadf671cecb6c53325fc1e8"
+      },
+      "errors.ts": {
+        "source": "src/errors.ts",
+        "sha256": "ea7e2306d94485000e633540976104ecd0187b14377273524ba3a428d439dff4"
+      },
+      "index.ts": {
+        "source": "src/index.ts",
+        "sha256": "954bbf407b875cd8ce4d5b07a5f8c23a0b9bd55625dfcda70eedbb50f4d42490"
+      },
+      "inflate.ts": {
+        "source": "src/inflate.ts",
+        "sha256": "506cf28c0c3c629d867eb202375060fbbb97c696573901e5d66c05648ae727e6"
+      },
+      "render.ts": {
+        "source": "src/render.ts",
+        "sha256": "868e64dd778fb0ca49833a936ba6f0e44d3304f247321e64ba09ac8e2483b729"
+      },
+      "types.ts": {
+        "source": "src/types.ts",
+        "sha256": "32e0dee818b728367a826c460b989914b9fa56547629a55e3a59f9984acc66cb"
+      },
+      "wordml.ts": {
+        "source": "src/wordml.ts",
+        "sha256": "228218c5ca72cd5d5efc5f3e42d840d387c872edb61e4937324dd3c6d0d1431c"
+      },
+      "xml.ts": {
+        "source": "src/xml.ts",
+        "sha256": "e2f25462b857b8a79a1b8425a86b41e582de2047bf3d2fd9cc7bbfdb11feacd4"
+      },
+      "zip.ts": {
+        "source": "src/zip.ts",
+        "sha256": "51dee04ae903c872dbf7b2338702b6bbf640998a4b545764b5750c6fa05c074e"
+      }
+    },
+    "vectors": {
+      "file": "lombokdocx-vectors-v1.json",
+      "sha256": "f959c7cd58b273803e49a6e55ff9742f2b27f6f69e27d183079b8320fa63edea"
+    }
+  },
+  "lombokhtml": {
+    "library": "LombokHTML",
+    "version": "0.2.0",
+    "commit": "ad2bc25",
+    "files": {
+      "entities.ts": {
+        "source": "typescript/src/entities.ts",
+        "sha256": "7f5c7b1a80a441383a556bb8db574e92a443bf097d1551f6b5b4fb0c7cafb815"
+      },
+      "index.ts": {
+        "source": "typescript/src/index.ts",
+        "sha256": "d131ce3ca33da03def78328116ab72a3c5073e31a65d592f29cb28788714edc8"
+      },
+      "tokenizer.ts": {
+        "source": "typescript/src/tokenizer.ts",
+        "sha256": "0bf0fff568bd392d2275832c182a072a5f7379ec15cd3db7d2ab0cf65a90fef3"
+      }
+    },
+    "vectors": {
+      "file": "lombokhtml-vectors-v1.json",
+      "sha256": "67b29c0a671d264859cacf30b5637dcc84e4bea6f72e469de64a6ec7a6c2e03a"
+    }
+  },
+  "lombokmarkdown": {
+    "library": "LombokMarkDown",
+    "version": "2.0.0",
+    "commit": "4fceb72",
+    "files": {
+      "blocks.ts": {
+        "source": "src/blocks.ts",
+        "sha256": "90fcbef1d28ec3c103e3d9e5db4718bffc0836edf9cc360d6515f86934952c05"
+      },
+      "common.ts": {
+        "source": "src/common.ts",
+        "sha256": "ba27f7c5c40dbc69d7258592b9ed620b837329b90ddaa217cba5faad08abd95a"
+      },
+      "entities.ts": {
+        "source": "src/entities.ts",
+        "sha256": "be6dc867f7aed3f32d8b680bb9a8050931a76fe193cf5bb3118b689f95e37296"
+      },
+      "index.ts": {
+        "source": "src/index.ts",
+        "sha256": "b3f8df340d89009f2b59bf8403de3cd33c3fe7abe8446edea95f0278c3de2809"
+      },
+      "inlines.ts": {
+        "source": "src/inlines.ts",
+        "sha256": "4a1f53af4f6e6c2fea4b126c188b1fa26c794e38f51c51529a9d3f1a02460514"
+      },
+      "markdown.ts": {
+        "source": "src/markdown.ts",
+        "sha256": "b5454bba27f372b8e370f520b4ec074c34faf50664d306df18357400609dc7ed"
+      },
+      "node.ts": {
+        "source": "src/node.ts",
+        "sha256": "090f1610caa1b9e2f67088b85b1f5f38b33995a326f8b254ca48a7faed215057"
+      },
+      "render.ts": {
+        "source": "src/render.ts",
+        "sha256": "49ce8d8e3fa05246f62e375e499ae724fd234b29de52b0115b59ecfb78355ccf"
+      },
+      "types.ts": {
+        "source": "src/types.ts",
+        "sha256": "9efa398f13071b99d3b6dd8703e3f453898e8d4a9121e1563b9884e12a66fc3e"
+      }
+    },
+    "vectors": {
+      "file": "lombokmarkdown-vectors-v1.json",
+      "sha256": "c36d84c01bf4da3833bc742f61481e978ae8ca1bfa40b87e3750eb6809dddffc"
+    }
+  }
+}
