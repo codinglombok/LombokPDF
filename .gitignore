@@ -87,5 +87,3 @@ docker-compose.override.yml
 /map
 /docs/*architecture*.*
 /docs/*masterplan*.*
-
-/scripts/*.sh
