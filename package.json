@@ -123,7 +123,7 @@
     "jsbarcode": "^3.11.6",
     "lombokqrcode": "^0.2.1",
     "pdf-lib": "^1.17.1",
-    "pdfkit": "^0.20.2",
+    "pdfkit": "^0.21.0",
     "sharp": "^0.35.5"
   },
   "devDependencies": {
